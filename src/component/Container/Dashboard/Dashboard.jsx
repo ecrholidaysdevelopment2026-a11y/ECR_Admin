@@ -1,0 +1,183 @@
+import { useState } from "react";
+import {
+    FiEye,
+    FiShoppingCart,
+    FiBox,
+    FiUsers
+} from "react-icons/fi";
+
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
+} from "chart.js";
+
+import { Line, Bar } from "react-chartjs-2";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
+);
+
+const stats = [
+    {
+        title: "Total Views",
+        value: "$3.456K",
+        change: "+0.43%",
+        icon: <FiEye />,
+        color: "var(--text-green)",
+    },
+    {
+        title: "Total Profit",
+        value: "$45.2K",
+        change: "+4.35%",
+        icon: <FiShoppingCart />,
+        color: "var(--text-green)",
+    },
+    {
+        title: "Total Products",
+        value: "2,450",
+        change: "+2.59%",
+        icon: <FiBox />,
+        color: "var(--text-green)",
+    },
+    {
+        title: "Total Users",
+        value: "3,456",
+        change: "-0.95%",
+        icon: <FiUsers />,
+        color: "var(--text-blue)",
+    },
+];
+
+const lineData = {
+    labels: ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+    datasets: [
+        {
+            label: "Total Revenue",
+            data: [30, 24, 36, 28, 45, 35, 63, 52, 58, 36, 39, 50],
+            borderColor: "#6366F1",
+            backgroundColor: "rgba(99,102,241,0.2)",
+            fill: true,
+            tension: 0.4
+        },
+        {
+            label: "Total Sales",
+            data: [22, 10, 24, 26, 14, 21, 37, 32, 44, 20, 30, 45],
+            borderColor: "#60A5FA",
+            backgroundColor: "rgba(96,165,250,0.2)",
+            fill: true,
+            tension: 0.4
+        }
+    ]
+};
+
+const barData = {
+    labels: ["M", "T", "W", "T", "F", "S", "S"],
+    datasets: [
+        {
+            label: "Sales",
+            data: [44, 55, 41, 67, 22, 43, 65],
+            backgroundColor: "#6366F1"
+        },
+        {
+            label: "Revenue",
+            data: [14, 23, 21, 9, 12, 27, 15],
+            backgroundColor: "#60A5FA"
+        }
+    ]
+};
+
+const Dashboard = () => {
+    const [selectedPeriod, setSelectedPeriod] = useState("Day");
+
+    return (
+        <div
+            className="p-6 min-h-screen"
+            style={{ backgroundColor: "var(--bg)", color: "var(--text)" }}
+        >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                {stats?.map((item, index) => (
+                    <div
+                        key={index}
+                        className="rounded-xl p-5 shadow-lg"
+                        style={{ backgroundColor: "var(--card-bg)" }}
+                    >
+                        <div className="flex items-center justify-between mb-4">
+                            <div
+                                className="w-10 h-10 flex items-center justify-center rounded-full"
+                                style={{ backgroundColor: "var(--icon-bg)" }}
+                            >
+                                {item.icon}
+                            </div>
+                            <span className="text-sm" style={{ color: item.color }}>
+                                {item.change}
+                            </span>
+                        </div>
+                        <h2 className="text-2xl font-semibold">{item.value}</h2>
+                        <p style={{ color: "var(--muted-text)" }}>{item.title}</p>
+                    </div>
+                ))}
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div
+                    className="lg:col-span-2 rounded-xl p-6 shadow-lg"
+                    style={{ backgroundColor: "var(--card-bg)" }}
+                >
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold">Total Revenue</h3>
+                        <div className="flex gap-2">
+                            {["Day", "Week", "Month"].map((period) => (
+                                <button
+                                    key={period}
+                                    className="px-3 py-1 rounded text-sm"
+                                    style={{
+                                        backgroundColor:
+                                            selectedPeriod === period
+                                                ? "var(--primary-red)"
+                                                : "var(--card-bg-dark)",
+                                        color: selectedPeriod === period ? "#fff" : "#fff",
+                                    }}
+                                    onClick={() => setSelectedPeriod(period)}
+                                >
+                                    {period}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="h-64">
+                        <Line data={lineData} />
+                    </div>
+                </div>
+                <div
+                    className="rounded-xl p-6 shadow-lg"
+                    style={{ backgroundColor: "var(--card-bg)" }}
+                >
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold">Profit This Week</h3>
+                        <span style={{ color: "var(--muted-text)" }}>This Week</span>
+                    </div>
+                    <div className="h-64">
+                        <Bar data={barData} />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Dashboard;
