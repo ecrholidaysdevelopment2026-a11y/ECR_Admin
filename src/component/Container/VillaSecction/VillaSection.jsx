@@ -112,14 +112,14 @@ const VillaSection = () => {
                         {filteredVillas?.map((villa) => (
                             <div
                                 key={villa?._id}
-                                className="bg-white rounded-xl shadow-md border border-gray-200 p-6 relative group hover:shadow-lg transition-shadow duration-300"
+                                className=" rounded-xl shadow-md border border-gray-200 p-6 relative group hover:shadow-lg transition-shadow duration-300"
                             >
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <h2 className="text-lg font-semibold text-gray-800 capitalize">
+                                        <h2 className="text-lg font-semibold  capitalize">
                                             {villa?.villaName}
                                         </h2>
-                                        <p className="text-gray-500 text-md mt-1">
+                                        <p className=" text-md mt-1">
                                             {villa?.locationId?.name || "Location not specified"}
                                         </p>
                                     </div>
@@ -132,7 +132,7 @@ const VillaSection = () => {
                                                 onClick={() =>
                                                     navigate(`/villadetails/${villa?.slug}`)
                                                 }
-                                                className="w-full px-4 py-2 text-sm text-blue-600 hover:bg-blue-100 text-left"
+                                                className="w-full px-4 py-2 text-sm  hover:bg-blue-100 text-left"
                                             >
                                                 👁 View
                                             </button>
@@ -157,7 +157,7 @@ const VillaSection = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <p className="text-gray-600 text-sm mt-1 line-clamp-2">
+                                <p className="text-sm mt-1 line-clamp-2">
                                     {villa?.overview || "No description available"}
                                 </p>
                                 {villa?.images?.villaImage && (
@@ -168,7 +168,7 @@ const VillaSection = () => {
                                             className="w-full h-48 object-cover rounded-lg border border-gray-300"
                                         />
                                         {villa?.images?.villaGallery?.length > 0 && (
-                                            <div className="flex items-center mt-2 text-sm text-blue-600">
+                                            <div className="flex items-center mt-2 text-sm ">
                                                 <TbView360 className="mr-1" />
                                                 <span>+{villa.images.villaGallery.length} more images</span>
                                             </div>
@@ -181,7 +181,7 @@ const VillaSection = () => {
                                             {villa.highlights.slice(0, 3).map((highlight, index) => (
                                                 <span
                                                     key={index}
-                                                    className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium whitespace-nowrap"
+                                                    className="px-3 py-1 bg-blue-50 text-black  rounded-full text-xs font-medium whitespace-nowrap"
                                                 >
                                                     {highlight}
                                                 </span>
@@ -194,7 +194,7 @@ const VillaSection = () => {
                                                 }`}>
                                                 {villa?.status ? "Active" : "Inactive"}
                                             </span>
-                                            <span className="text-sm text-gray-600">
+                                            <span className="text-sm">
                                                 ₹{villa?.offerPrice || villa?.price}/night
                                             </span>
                                         </div>
@@ -210,31 +210,31 @@ const VillaSection = () => {
                     </div>
                 )}
                 {viewMode === "list" && (
-                    <div className="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
+                    <div className=" rounded-xl shadow border border-gray-200 overflow-hidden">
                         <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                            <thead>
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                         Villa
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                         Location
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                         Price
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                         Status
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                         Featured
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className=" divide-y divide-gray-200">
                                 {filteredVillas?.map((villa) => (
                                     <tr key={villa._id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4">
@@ -252,7 +252,7 @@ const VillaSection = () => {
                                                     <div className="text-sm font-medium text-gray-900">
                                                         {villa.villaName}
                                                     </div>
-                                                    <div className="text-sm text-gray-500 line-clamp-1">
+                                                    <div className="text-sm line-clamp-1">
                                                         {villa.overview || "No description"}
                                                     </div>
                                                 </div>
@@ -270,7 +270,7 @@ const VillaSection = () => {
                                                         <span className="text-red-600 font-semibold">
                                                             ₹{villa.offerPrice}
                                                         </span>
-                                                        <span className="text-gray-500 line-through text-xs ml-2">
+                                                        <span className="line-through text-xs ml-2">
                                                             ₹{villa.price}
                                                         </span>
                                                     </div>
@@ -304,7 +304,7 @@ const VillaSection = () => {
                                                         setEditData(villa);
                                                         setShowCreate(true);
                                                     }}
-                                                    className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50"
+                                                    className=" hover:text-blue-900 p-1 rounded hover:bg-blue-50"
                                                     title="Edit"
                                                 >
                                                     <FiEdit size={18} />

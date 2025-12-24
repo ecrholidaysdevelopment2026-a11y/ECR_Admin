@@ -4,7 +4,7 @@ import { ChevronDown, X, Search } from "lucide-react";
 const MultiSelectDropdown = ({
     label = "",
     options = [],
-    selected = [],     
+    selected = [],
     onChange,
     multiple = false,
     searchable = false
@@ -33,14 +33,14 @@ const MultiSelectDropdown = ({
             updated = [id];
             setOpen(false);
         }
-        onChange(updated); 
+        onChange(updated);
     };
 
     return (
-        <div className="relative w-full">
+        <div className="relative w-full ">
             {label && <label className="text-sm text-gray-700">{label}</label>}
             <div
-                className="border p-2 rounded-sm border-gray-300 flex items-center justify-between cursor-pointer min-h-[41px] flex-wrap gap-1"
+                className="border p-2 mt-1 rounded-sm border-gray-300 flex items-center justify-between cursor-pointer min-h-[41px] flex-wrap gap-1"
                 onClick={() => setOpen(!open)}
             >
                 {selected.length === 0 && (
@@ -92,7 +92,7 @@ const MultiSelectDropdown = ({
                             <div
                                 key={item._id}
                                 onClick={() => toggleValue(item._id)}
-                                className={`p-2 cursor-pointer hover:bg-gray-100 flex items-center justify-between ${selected.includes(item._id) ? "bg-blue-50" : ""
+                                className={`px-2 py-1 cursor-pointer hover:bg-gray-100 flex items-center justify-between ${selected.includes(item._id) ? "bg-blue-50" : ""
                                     }`}
                             >
                                 {item.name}

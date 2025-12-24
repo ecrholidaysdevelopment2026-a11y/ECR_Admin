@@ -115,11 +115,11 @@ const VillaDetailsSection = ({ slug }) => {
                         )}
                     </div>
 
-                    <h1 className="text-2xl font-bold text-gray-900 mb-3">
+                    <h1 className="text-2xl font-bold text-gray-900 ">
                         {selectedVilla.villaName}
                     </h1>
 
-                    <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-4">
+                    <div className="flex flex-wrap items-center gap-4 text-gray-600 ">
                         <div className="flex items-center gap-1">
                             <MapPin className="w-4 h-4" />
                             <span>{selectedVilla.locationId?.locationName}</span>
@@ -130,7 +130,7 @@ const VillaDetailsSection = ({ slug }) => {
                             <span className="text-sm text-gray-500">({selectedVilla.reviews?.length || 0})</span>
                         </div>
                     </div>
-                    <div className="flex items-baseline gap-3 mb-6">
+                    <div className="flex items-baseline gap-3 mb-3">
                         <div className="flex items-baseline gap-1">
                             <span className="text-2xl font-bold text-gray-900">
                                 ₹{selectedVilla.isOffer ? selectedVilla.offerPrice : selectedVilla.price}
@@ -148,7 +148,7 @@ const VillaDetailsSection = ({ slug }) => {
                             </>
                         )}
                     </div>
-                    <div className="flex flex-wrap gap-6 pt-4 border-t border-gray-100">
+                    <div className="flex flex-wrap gap-6  border-t border-gray-100">
                         <div className="flex items-center gap-2">
                             <div className="p-1.5 bg-teal-50 rounded-md">
                                 <Users className="w-4 h-4 text-teal-600" />
@@ -170,7 +170,7 @@ const VillaDetailsSection = ({ slug }) => {
                     </div>
                 </div>
                 {allImages.length > 0 && (
-                    <div className="mb-8">
+                    <div className="mb-5">
                         <div className="mb-4">
                             <div className="relative overflow-hidden rounded-lg">
                                 <Image
@@ -204,8 +204,8 @@ const VillaDetailsSection = ({ slug }) => {
                     </div>
                 )}
                 {selectedVilla.overview && (
-                    <div className="mb-8">
-                        <h2 className="text-lg font-semibold text-gray-900 mb-3">Overview</h2>
+                    <div className="mb-3">
+                        <h2 className="text-lg font-semibold text-gray-900 ">Overview</h2>
                         <p className="text-gray-700">
                             {selectedVilla.overview}
                         </p>
@@ -213,7 +213,7 @@ const VillaDetailsSection = ({ slug }) => {
                 )}
                 {selectedVilla?.highlights?.length > 0 && (
                     <div className="mb-8">
-                        <h2 className="text-lg font-semibold text-gray-900 mb-3">Highlights</h2>
+                        <h2 className="text-lg font-semibold text-gray-900 mb-1">Highlights</h2>
                         <div className="space-y-2">
                             {selectedVilla.highlights.map((h, i) => (
                                 <div key={i} className="flex items-start gap-2">
@@ -227,29 +227,29 @@ const VillaDetailsSection = ({ slug }) => {
                     </div>
                 )}
                 <div className="mb-8">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-3">Amenities</h2>
-                    <div className="grid grid-cols-2 gap-3">
-                        <div className="flex items-center gap-2 p-2">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-1">Amenities</h2>
+                    <div className="grid grid-cols-2 gap-1">
+                        <div className="flex items-center gap-2 p-1">
                             <Bed className="w-4 h-4 text-blue-600" />
                             <span className="text-sm text-gray-700">Comfortable Beds</span>
                         </div>
-                        <div className="flex items-center gap-2 p-2">
+                        <div className="flex items-center gap-2 p-1">
                             <Bath className="w-4 h-4 text-teal-600" />
                             <span className="text-sm text-gray-700">Private Bathrooms</span>
                         </div>
-                        <div className="flex items-center gap-2 p-2">
+                        <div className="flex items-center gap-2 p-1">
                             <Wifi className="w-4 h-4 text-purple-600" />
                             <span className="text-sm text-gray-700">High-speed WiFi</span>
                         </div>
-                        <div className="flex items-center gap-2 p-2">
+                        <div className="flex items-center gap-2 p-1">
                             <Car className="w-4 h-4 text-orange-600" />
                             <span className="text-sm text-gray-700">Free Parking</span>
                         </div>
-                        <div className="flex items-center gap-2 p-2">
+                        <div className="flex items-center gap-2 p-1">
                             <Coffee className="w-4 h-4 text-emerald-600" />
                             <span className="text-sm text-gray-700">Kitchen</span>
                         </div>
-                        <div className="flex items-center gap-2 p-2">
+                        <div className="flex items-center gap-2 p-1">
                             <Tv className="w-4 h-4 text-amber-600" />
                             <span className="text-sm text-gray-700">Entertainment</span>
                         </div>
@@ -258,7 +258,7 @@ const VillaDetailsSection = ({ slug }) => {
                 {selectedVilla?.locationId?.mapLink && (
                     <div className="mb-8">
                         <div className="mb-4">
-                            <h2 className="text-lg font-semibold text-gray-900 mb-2">Location</h2>
+                            <h2 className="text-lg font-semibold text-gray-900 mb-1">Location</h2>
                             <div className="flex items-center gap-2 mb-3">
                                 <MapPin className="w-4 h-4 text-gray-500" />
                                 <span className="font-medium">{selectedVilla.locationId.locationName}</span>
@@ -291,27 +291,27 @@ const VillaDetailsSection = ({ slug }) => {
                 )}
                 <div className="mb-8 pt-6 border-t border-gray-100">
                     <h2 className="text-lg font-semibold text-gray-900 mb-4">Details</h2>
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 gap-1">
                         <div>
-                            <div className="flex justify-between py-2 border-b border-gray-100">
+                            <div className="flex justify-between py-1 border-b border-gray-100">
                                 <span className="text-sm text-gray-600">Property ID</span>
                                 <span className="text-sm font-mono text-gray-800">
                                     {selectedVilla._id?.substring(0, 8)}...
                                 </span>
                             </div>
-                            <div className="flex justify-between py-2 border-b border-gray-100">
+                            <div className="flex justify-between py-1 border-b border-gray-100">
                                 <span className="text-sm text-gray-600">Created</span>
                                 <span className="text-sm text-gray-800">
                                     {new Date(selectedVilla.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                 </span>
                             </div>
-                            <div className="flex justify-between py-2 border-b border-gray-100">
+                            <div className="flex justify-between py-1 border-b border-gray-100">
                                 <span className="text-sm text-gray-600">Last Updated</span>
                                 <span className="text-sm text-gray-800">
                                     {new Date(selectedVilla.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                 </span>
                             </div>
-                            <div className="flex justify-between py-2 border-b border-gray-100">
+                            <div className="flex justify-between py-1 border-b border-gray-100">
                                 <span className="text-sm text-gray-600">Location ID</span>
                                 <span className="text-sm font-mono text-gray-800">
                                     {selectedVilla.locationId?._id?.substring(0, 8) || 'N/A'}...

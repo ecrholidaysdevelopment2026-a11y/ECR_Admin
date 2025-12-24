@@ -19,12 +19,16 @@ import { generateSlug } from "../../../utils/generateSlug";
 import SingleSelectDropdown from "../../../common/SingleSelectDropdown";
 import MultiSelectDropdown from "../../../common/MultiSelectDropdown";
 import { getAllExtraServices } from "../../../store/slice/serviceSlice";
+import { getAllAmenities } from "../../../store/slice/amenitiesSlice";
 
 const CreateVilla = ({ formData, onBack }) => {
     const dispatch = useDispatch();
     const { loading, message, error } = useSelector((state) => state.villa);
     const { locations } = useSelector((state) => state.locations);
     const { services } = useSelector((state) => state.service);
+    const {
+        amenities,
+    } = useSelector((state) => state.amenities);
 
     const [form, setForm] = useState({
         villaName: "",
@@ -49,11 +53,13 @@ const CreateVilla = ({ formData, onBack }) => {
         isFeatured: false,
     });
 
+    useEffect(() => {
+        dispatch(getAllAmenities());
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getAllExtraServices());
     }, [dispatch]);
-
 
     useEffect(() => {
         dispatch(getAllLocations());
@@ -224,7 +230,6 @@ const CreateVilla = ({ formData, onBack }) => {
                         placeholder="Select a location"
                     />
                 </div>
-
                 <textarea
                     name="overview"
                     rows={4}
@@ -234,24 +239,38 @@ const CreateVilla = ({ formData, onBack }) => {
                     className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-0 focus:border-gray-300"
                 />
 
-                <div>
-                    <label className="font-medium">Highlights</label>
-                    {form.highlights.map((val, idx) => (
-                        <div key={idx} className="flex gap-2 mt-1">
-                            <input
-                                type="text"
-                                value={val}
-                                onChange={(e) => handleArrayFieldChange("highlights", idx, e.target.value)}
-                                className="border p-1 flex-1 rounded"
-                            />
-                            <button type="button" onClick={() => removeArrayField("highlights", idx)}>
-                                <X size={16} />
-                            </button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => addArrayField("highlights")} className="text-blue-600 mt-1">
-                        + Add Highlight
-                    </button>
+                <div className="grid grid-cols-2 gap-3">
+                    <MultiSelectDropdown
+                        label="Select Amenities"
+                        options={amenities}
+                        selected={form.amenities}
+                        onChange={(ids) =>
+                            setForm((prev) => ({ ...prev, amenities: ids }))
+                        }
+                        multiple={true}
+                        searchable={true}
+                        labelKey="serviceName"
+                        placeholder="Select Service"
+                    />
+                    <div>
+                        <label className="font-medium">Highlights</label>
+                        {form?.highlights?.map((val, idx) => (
+                            <div key={idx} className="flex gap-2 mt-1">
+                                <input
+                                    type="text"
+                                    value={val}
+                                    onChange={(e) => handleArrayFieldChange("highlights", idx, e.target.value)}
+                                    className="border p-2 flex-1 rounded border-gray-300"
+                                />
+                                <button type="button" onClick={() => removeArrayField("highlights", idx)}>
+                                    <X size={16} />
+                                </button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={() => addArrayField("highlights")} className="text-blue-600 mt-1">
+                            + Add Highlight
+                        </button>
+                    </div>
                 </div>
                 <div className="border-dashed border-2 p-4 rounded-lg text-center">
                     <input type="file" accept="image/*" className="hidden" id="villa-cover" onChange={handleSingleImage} />
@@ -284,25 +303,12 @@ const CreateVilla = ({ formData, onBack }) => {
                         ))}
                     </div>
                 )}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3 items-center">
                     <InputField type="number" name="price" placeholder="Price" value={form.price} onChange={handleChange} />
-                    <MultiSelectDropdown
-                        label="Select Service"
-                        options={services}
-                        selected={form.amenities}
-                        onChange={(ids) =>
-                            setForm((prev) => ({ ...prev, amenities: ids }))
-                        }
-                        multiple={true}
-                        searchable={true}
-                        labelKey="serviceName"
-                        placeholder="Select Service"
-                    />
-
-                </div>
-                <div className="flex items-center gap-3">
-                    <input type="checkbox" checked={form.isOffer} onChange={() => handleToggle("isOffer")} />
-                    <span>Is Offer?</span>
+                    <div className="flex items-center gap-3">
+                        <input type="checkbox" checked={form.isOffer} onChange={() => handleToggle("isOffer")} />
+                        <span>Is Offer?</span>
+                    </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     {form.isOffer && <InputField type="number" name="offerPrice" placeholder="Offer Price" value={form.offerPrice} onChange={handleChange} />}

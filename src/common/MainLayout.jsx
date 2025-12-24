@@ -54,7 +54,7 @@ const MainLayout = ({
             </div>
 
             <div className=" flex items-center justify-between">
-                <h2 className="text-md font-semibold text-gray-700 px-2">
+                <h2 className="text-md font-semibold text-gray-500 px-2">
                     {finalTitle}
                     {typeof itemsCount === "number" && (
                         <span className="ml-1 text-gray-500">({itemsCount})</span>

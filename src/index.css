@@ -7,7 +7,7 @@
   --font-manrope: "Manrope", sans-serif;
   --font-poppins: "Poppins", sans-serif;
   --font-playfair: "Playfair Display", serif;
-  --icon-bg: #e5e7eb; /* light mode icon background */
+  --icon-bg: #e5e7eb; 
 
   --primary-red: #fa0400;
 
@@ -55,10 +55,6 @@ body {
   -ms-overflow-style: none;
 }
 
-p {
-  color: var(--muted-text);
-  transition: color var(--transition-speed) ease;
-}
 
 @media (max-width: 768px) {
   p {

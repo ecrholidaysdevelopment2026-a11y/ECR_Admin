@@ -13,6 +13,7 @@ import {
     LuChevronDown,
     LuWrench,
     LuMapPin,
+    LuSofa,
 } from "react-icons/lu";
 
 import logo from "../../../assets/ecr-logo.svg";
@@ -94,6 +95,11 @@ const Sidebar = () => {
                                     to: "/extra-services",
                                     label: "Extra Service",
                                     icon: <LuWrench />,
+                                },
+                                {
+                                    to: "/amenities",
+                                    label: "Amenities",
+                                    icon: <LuSofa />,
                                 },
                                 {
                                     to: "/villa",
