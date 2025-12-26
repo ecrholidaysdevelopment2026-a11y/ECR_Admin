@@ -61,10 +61,31 @@ export const changePassword = createAsyncThunk(
   }
 );
 
+export const getAllUsers = createAsyncThunk(
+  "user/getAllUsers",
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state?.auth?.accessToken;
+
+    try {
+      const response = await FetchApi({
+        endpoint: "/user",
+        method: "GET",
+        token,
+      });
+
+      return response?.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message || "Failed to fetch users");
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
     userData: null,
+    users: [],
     loading: false,
     error: null,
     message: null,
@@ -120,6 +141,17 @@ const userSlice = createSlice({
           action.payload?.message || "Password changed successfully";
       })
       .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllUsers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload;
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

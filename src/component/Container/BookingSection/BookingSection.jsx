@@ -160,7 +160,7 @@ const BookingSection = () => {
             onAddClick={handleAddBooking}
         >
             <div className="space-y-6">
-                <div className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-sm md:flex-row md:items-center md:justify-between">
+                <div className="flex flex-col gap-4 p-4  rounded-lg shadow-sm md:flex-row md:items-center md:justify-between">
                     <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
                         <div className="flex gap-2">
                             <select
@@ -205,7 +205,7 @@ const BookingSection = () => {
                     </div>
                 </div>
                 {selectedBookings?.length > 0 && (
-                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="p-4 A border border-blue-200 rounded-lg">
                         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                             <p className="text-sm font-medium text-blue-800">
                                 {selectedBookings.length} booking(s) selected
@@ -230,10 +230,10 @@ const BookingSection = () => {
                         </div>
                     </div>
                 )}
-                <div className="overflow-hidden bg-white rounded-lg shadow-sm">
+                <div className="overflow-hidden  rounded-lg shadow-sm">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                            <thead>
                                 <tr>
                                     <th className="w-12 px-6 py-3">
                                         <input
@@ -272,7 +272,7 @@ const BookingSection = () => {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className=" divide-y divide-gray-200">
                                 {sortedBookings.length === 0 ? (
                                     <tr>
                                         <td colSpan="8" className="px-6 py-12 text-center">

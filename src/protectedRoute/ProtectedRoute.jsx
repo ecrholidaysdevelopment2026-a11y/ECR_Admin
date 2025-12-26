@@ -21,9 +21,9 @@ const ProtectedLayout = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex flex-1">
-        <aside className="w-16 md:w-60 h-screen sticky top-0 overflow-y-auto">
+        <div className="w-16 md:w-60 h-screen sticky top-0 overflow-y-auto ">
           <Sidebar />
-        </aside>
+        </div>
         <div className="flex-1 overflow-auto">
           <Header />
           <div className="p-6">
