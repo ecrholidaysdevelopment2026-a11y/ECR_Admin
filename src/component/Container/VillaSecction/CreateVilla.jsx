@@ -25,7 +25,6 @@ const CreateVilla = ({ formData, onBack }) => {
     const dispatch = useDispatch();
     const { loading, message, error } = useSelector((state) => state.villa);
     const { locations } = useSelector((state) => state.locations);
-    const { services } = useSelector((state) => state.service);
     const {
         amenities,
     } = useSelector((state) => state.amenities);

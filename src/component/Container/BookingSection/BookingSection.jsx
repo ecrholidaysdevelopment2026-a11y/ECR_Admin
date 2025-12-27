@@ -273,7 +273,7 @@ const BookingSection = () => {
                                 </tr>
                             </thead>
                             <tbody className=" divide-y divide-gray-200">
-                                {sortedBookings.length === 0 ? (
+                                {sortedBookings?.length === 0 ? (
                                     <tr>
                                         <td colSpan="8" className="px-6 py-12 text-center">
                                             <div className="flex flex-col items-center justify-center">
@@ -391,9 +391,9 @@ const BookingSection = () => {
                                                     >
                                                         <FiEdit size={14} /> Edit
                                                     </button>
-                                                    {/* <button
+                                                    <button
                                                         onClick={() => {
-                                                            setDeleteId(booking._id);
+                                                            setDeleteId(booking?.bookingId);
                                                             setOpenDelete(true);
                                                         }}
                                                         disabled={booking.bookingStatus === "CANCELLED"}
@@ -408,7 +408,7 @@ const BookingSection = () => {
                                                         }
                                                     >
                                                         <FiTrash2 size={14} /> Cancel
-                                                    </button> */}
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
