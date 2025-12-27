@@ -22,17 +22,14 @@ export const FetchApi = async ({
       credentials: "include",
       signal: controller.signal,
     });
-
     clearTimeout(timeoutId);
     const contentType = response.headers.get("content-type");
     const rawText = await response.text();
-
     if (!response.ok) {
       let json = rawText;
       try {
         json = JSON.parse(rawText);
       } catch {}
-
       const errorMessage =
         json?.data?.errors ||
         json?.errors ||
