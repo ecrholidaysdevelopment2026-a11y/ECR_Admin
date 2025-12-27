@@ -10,7 +10,7 @@ import {
   Package,
 } from "lucide-react";
 import MainLayout from "../../../common/MainLayout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from "../../../store/slice/userSlice";
 
 const dummyUsers = [
@@ -51,18 +51,20 @@ const dummyUsers = [
 
 const UserSection = () => {
   const dispatch = useDispatch();
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const { users } = useSelector((state) => state.user)
+  console.log(users);
+
 
   useEffect(() => {
-    setUsers(dummyUsers);
     dispatch(getAllUsers())
   }, []);
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = users?.filter((user) => {
     const matchesSearch =
       search === "" ||
       user.firstName.toLowerCase().includes(search.toLowerCase()) ||
@@ -209,9 +211,6 @@ const UserSection = () => {
                     Contact
                   </th>
                   <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                    Orders
-                  </th>
-                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                     Address
                   </th>
                   <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
@@ -283,19 +282,7 @@ const UserSection = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                            user.myOrders.length > 0
-                              ? "bg-purple-100 text-purple-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          <Package size={14} className="mr-1" />
-                          {user.myOrders.length}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        {user.shippingAddress.length > 0 ? (
+                        {user.shippingAddress?.length > 0 ? (
                           <div className="flex items-center gap-2 text-sm text-green-600">
                             <MapPin size={14} />
                             Address saved
