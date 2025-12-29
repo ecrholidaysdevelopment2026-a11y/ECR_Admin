@@ -104,14 +104,14 @@ const Sidebar = () => {
                                     icon: <LuSofa />,
                                 },
                                 {
-                                    to: "/promo",
-                                    label: "Promo Code",
-                                    icon: <LuTag />,
-                                },
-                                {
                                     to: "/villa",
                                     label: "Villa",
                                     icon: <LucideHome />,
+                                },
+                                {
+                                    to: "/promo",
+                                    label: "Promo Code",
+                                    icon: <LuTag />,
                                 },
 
                             ]?.map(({ to, label, icon }) => (
@@ -119,10 +119,9 @@ const Sidebar = () => {
                                     key={to}
                                     to={to}
                                     className={({ isActive }) =>
-                                        `flex items-center gap-3 px-3 py-2 text-sm transition-colors ${isActive ? "font-medium" : ""
+                                        `${baseLink} ${isActive ? "bg-teal-700 text-white" : ""
                                         }`
                                     }
-                                    style={{ color: "var(--muted-text)" }}
                                 >
                                     <span className="text-lg">{icon}</span>
                                     {label}
@@ -133,6 +132,7 @@ const Sidebar = () => {
                     {[
                         { to: "/profile", label: "Profile", icon: <AiOutlineSetting /> },
                         { to: "/booking", label: "Booking", icon: <MdOutlineProductionQuantityLimits /> },
+                        { to: "/offers", label: "Offers", icon: <FaGift /> },
                         { to: "/users", label: "Users", icon: <FaUserCheck /> },
                     ].map(({ to, label, icon }) => (
                         <NavLink

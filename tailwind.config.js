@@ -1,11 +1,12 @@
-export default {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
         skin: {
           bg: "var(--bg)",
           text: "var(--text)",
-          border: "var(--border)",
           muted: "var(--muted-text)",
           blue: "var(--text-blue)",
           green: "var(--text-green)",
@@ -13,5 +14,5 @@ export default {
       },
     },
   },
+  plugins: [],
 };
-
