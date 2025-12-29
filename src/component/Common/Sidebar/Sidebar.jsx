@@ -14,6 +14,7 @@ import {
     LuWrench,
     LuMapPin,
     LuSofa,
+    LuTag,
 } from "react-icons/lu";
 
 import logo from "../../../assets/ecr-logo.svg";
@@ -96,10 +97,16 @@ const Sidebar = () => {
                                     label: "Extra Service",
                                     icon: <LuWrench />,
                                 },
+
                                 {
                                     to: "/amenities",
                                     label: "Amenities",
                                     icon: <LuSofa />,
+                                },
+                                {
+                                    to: "/promo",
+                                    label: "Promo Code",
+                                    icon: <LuTag />,
                                 },
                                 {
                                     to: "/villa",
@@ -126,7 +133,6 @@ const Sidebar = () => {
                     {[
                         { to: "/profile", label: "Profile", icon: <AiOutlineSetting /> },
                         { to: "/booking", label: "Booking", icon: <MdOutlineProductionQuantityLimits /> },
-                        { to: "/offers", label: "Offers", icon: <FaGift /> },
                         { to: "/users", label: "Users", icon: <FaUserCheck /> },
                     ].map(({ to, label, icon }) => (
                         <NavLink

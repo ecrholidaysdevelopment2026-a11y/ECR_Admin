@@ -250,9 +250,6 @@ const BookingSection = () => {
                                         Booking Details
                                     </th>
                                     <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                        Customer
-                                    </th>
-                                    <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                         Villa  Name
                                     </th>
                                     <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
@@ -305,42 +302,21 @@ const BookingSection = () => {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4">
-                                                <div className="space-y-2">
-                                                    <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
-                                                        <FiUser size={14} />
-                                                        {booking.customer.fullName}
-                                                    </div>
-                                                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                                                        <Mail size={14} />
-                                                        {booking.customer.email}
-                                                    </div>
-                                                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                                                        <Phone size={14} />
-                                                        {booking.customer.mobile}
-                                                    </div>
-                                                    {booking.customer.address && (
-                                                        <div className="flex items-start gap-2 text-xs text-gray-500">
-                                                            <MapPin size={14} className="mt-0.5" />
-                                                            <span className="line-clamp-2">{booking.customer.address}</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </td>
+
                                             <td>
                                                 <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
-                                                    <FiHome size={14} />
+                                                    <FiHome size={24} />
                                                     {booking.villaId?.villaName || "N/A"}
                                                 </div>
                                             </td>
                                             <td>
-                                                <div className="text-xs text-gray-500">
+                                                <div className="text-sm text-center text-gray-500">
                                                     {booking.locationId?.locationName}
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                                                    <FiCalendar size={14} />
+                                                    <FiCalendar size={24} />
                                                     {formatDate(booking.checkInDate)} → {formatDate(booking.checkOutDate)}
                                                 </div>
                                             </td>
@@ -349,9 +325,6 @@ const BookingSection = () => {
                                                     <div className="flex items-center gap-2 text-lg font-bold text-gray-900">
                                                         <FiDollarSign size={16} />
                                                         ₹{booking.totalAmount?.toLocaleString()}
-                                                    </div>
-                                                    <div className="text-xs text-gray-500">
-                                                        Method: {booking.paymentMethod}
                                                     </div>
                                                     <div className="mt-1">
                                                         {getPaymentBadge(booking.paymentStatus)}
@@ -376,7 +349,7 @@ const BookingSection = () => {
                                                             setViewData(booking);
                                                             setShowView(true);
                                                         }}
-                                                        className="flex items-center justify-center gap-1 px-3 py-2 text-sm text-white bg-green-500 rounded hover:bg-green-600"
+                                                        className="flex items-center justify-center gap-1 px-3 py-2 text-xs text-white bg-green-500 rounded hover:bg-green-600"
                                                         title="View Details"
                                                     >
                                                         <FiEye size={14} /> View
@@ -386,7 +359,7 @@ const BookingSection = () => {
                                                             setEditData(booking);
                                                             setShowCreate(true);
                                                         }}
-                                                        className="flex items-center justify-center gap-1 px-3 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600"
+                                                        className="flex items-center justify-center gap-1 px-3 py-2 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
                                                         title="Edit Booking"
                                                     >
                                                         <FiEdit size={14} /> Edit
@@ -397,7 +370,7 @@ const BookingSection = () => {
                                                             setOpenDelete(true);
                                                         }}
                                                         disabled={booking.bookingStatus === "CANCELLED"}
-                                                        className={`flex items-center justify-center gap-1 px-3 py-2 text-sm rounded ${booking.bookingStatus === "CANCELLED"
+                                                        className={`flex items-center justify-center gap-1 px-3 py-2 text-xs rounded ${booking.bookingStatus === "CANCELLED"
                                                             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                                                             : "bg-red-500 text-white hover:bg-red-600"
                                                             }`}

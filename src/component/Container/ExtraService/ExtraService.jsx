@@ -87,13 +87,13 @@ const ExtraService = () => {
                                         <td className="py-3 px-6">{service?.code}</td>
                                         <td className="py-3 px-6">₹{service?.price}</td>
                                         <td className="py-3 px-6">
-                                            <div className="flex gap-2">
+                                            <div className="flex gap-2 text-sm">
                                                 <button
                                                     onClick={() => {
                                                         setEditData(service);
                                                         setShowCreate(true);
                                                     }}
-                                                    className="flex items-center gap-1 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                                    className="flex items-center gap-1 px-3 py-1 bg-black text-white rounded"
                                                 >
                                                     <FiEdit /> Edit
                                                 </button>

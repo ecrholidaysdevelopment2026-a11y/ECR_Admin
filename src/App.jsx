@@ -16,6 +16,7 @@ import VillaDetailsSection from "./component/Container/VillaDetailsSection/Villa
 import VillaDetails from "./pages/VillaDetails/VillaDetails";
 import Amenities from "./pages/Amenities/Amenities";
 import Booking from "./pages/Booking/Booking";
+import Promo from "./pages/Promo/Promo";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ function App() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/villadetails/:slug" element={<VillaDetails />} />
         <Route path="/amenities" element={<Amenities />} />
+        <Route path="/promo" element={<Promo />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

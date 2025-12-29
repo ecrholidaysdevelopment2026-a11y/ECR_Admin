@@ -248,8 +248,8 @@ const CreateVilla = ({ formData, onBack }) => {
                         }
                         multiple={true}
                         searchable={true}
-                        labelKey="serviceName"
-                        placeholder="Select Service"
+                        labelKey="amenityName"
+                        placeholder="Select Amenities"
                     />
                     <div>
                         <label className="font-medium">Highlights</label>
@@ -277,7 +277,7 @@ const CreateVilla = ({ formData, onBack }) => {
                         <Upload />
                         <span>Upload Cover Image</span>
                     </label>
-                    {form.villaImage && <p className="mt-2">{form.villaImage.name}</p>}
+                    {form?.villaImage && <p className="mt-2">{form?.villaImage?.name}</p>}
                 </div>
                 <div className="border-dashed border-2 p-4 rounded-lg text-center mt-2">
                     <input type="file" multiple accept="image/*" className="hidden" id="villa-gallery" onChange={handleGalleryUpload} />
@@ -286,9 +286,9 @@ const CreateVilla = ({ formData, onBack }) => {
                         <span>Upload Gallery Images</span>
                     </label>
                 </div>
-                {form.galleryPreview.length > 0 && (
+                {form?.galleryPreview?.length > 0 && (
                     <div className="grid grid-cols-3 gap-2 mt-2">
-                        {form.galleryPreview.map((img, i) => (
+                        {form?.galleryPreview?.map((img, i) => (
                             <div key={i} className="relative w-full">
                                 <Image src={typeof img === "string" ? img : URL.createObjectURL(img)} className="w-full h-30 rounded-lg object-cover" />
                                 <button
@@ -314,8 +314,8 @@ const CreateVilla = ({ formData, onBack }) => {
                     <InputField type="number" name="maxGuests" placeholder="Max Guests" value={form.maxGuests} onChange={handleChange} />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                    <InputField type="time" name="checkInTime" placeholder="Check In Time" value={form.checkInTime} onChange={handleChange} />
-                    <InputField type="time" name="checkOutTime" placeholder="Check Out Time" value={form.checkOutTime} onChange={handleChange} />
+                    <InputField type="datetime-local" name="checkInTime" placeholder="Check In Time" value={form.checkInTime} onChange={handleChange} />
+                    <InputField type="datetime-local" name="checkOutTime" placeholder="Check Out Time" value={form.checkOutTime} onChange={handleChange} />
                 </div>
                 <div className="flex items-center gap-3">
                     <span className="font-medium">Featured:</span>
