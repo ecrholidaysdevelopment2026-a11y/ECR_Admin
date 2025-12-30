@@ -49,7 +49,7 @@ const SingleSelectDropdown = ({
 
     return (
         <div className="relative w-full" ref={dropdownRef}>
-            {label && <label className="block text-sm font-medium mb-1">{label}</label>}
+            {label && <label className="block text-sm  mb-1 text-gray-600">{label}</label>}
             <div
                 className="w-full p-2 border border-gray-300 rounded-sm cursor-pointer 
                 flex items-center justify-between bg-white relative"

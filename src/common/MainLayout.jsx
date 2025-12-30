@@ -42,8 +42,8 @@ const MainLayout = ({
                 )}
 
                 <div className="flex items-center gap-2 font-semibold text-sm">
-                    <Link to="/" className="text-gray-500 hover:text-blue-600">
-                        Dashboard
+                    <Link to="/" className="text-gray-600 hover:text-orange-500">
+                        Dashboard /
                     </Link>
                     {onAddClick && (
                         <Button className="bg-amber-50" onClick={onAddClick}>

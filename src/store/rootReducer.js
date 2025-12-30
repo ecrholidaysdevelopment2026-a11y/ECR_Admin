@@ -7,6 +7,9 @@ import villaReducer from "./slice/villaSlice";
 import amenitiesReducer from "./slice/amenitiesSlice";
 import bookingReducer from "./slice/bookingSlice";
 import promoReducer from "./slice/promoSlice";
+import notificationReducer from "./slice/notificationSlice";
+import dashboardReducer from "./slice/dashboardSlice";
+
 const reducer = combineReducers({
   user: userReducer,
   auth: loginReducer,
@@ -16,5 +19,7 @@ const reducer = combineReducers({
   amenities: amenitiesReducer,
   booking: bookingReducer,
   promo: promoReducer,
+  notifications: notificationReducer,
+  dashboard: dashboardReducer,
 });
 export default reducer;

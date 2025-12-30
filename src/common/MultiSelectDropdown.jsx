@@ -15,10 +15,12 @@ const MultiSelectDropdown = ({
 
     useEffect(() => {
         const filtered = options.filter((opt) =>
-            opt._id.toString().includes(search) || opt.name.toLowerCase().includes(search.toLowerCase())
+            opt._id?.toString().includes(search) ||
+            opt.name?.toLowerCase().includes(search.toLowerCase())
         );
         setFilteredOptions(filtered);
     }, [search, options]);
+
 
     const toggleValue = (id) => {
         let updated = [];

@@ -364,24 +364,18 @@ const BookingSection = () => {
                                                     >
                                                         <FiEdit size={14} /> Edit
                                                     </button>
-                                                    <button
-                                                        onClick={() => {
-                                                            setDeleteId(booking?.bookingId);
-                                                            setOpenDelete(true);
-                                                        }}
-                                                        disabled={booking.bookingStatus === "CANCELLED"}
-                                                        className={`flex items-center justify-center gap-1 px-3 py-2 text-xs rounded ${booking.bookingStatus === "CANCELLED"
-                                                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                                                            : "bg-red-500 text-white hover:bg-red-600"
-                                                            }`}
-                                                        title={
-                                                            booking.bookingStatus === "CANCELLED"
-                                                                ? "Already Cancelled"
-                                                                : "Cancel Booking"
-                                                        }
-                                                    >
-                                                        <FiTrash2 size={14} /> Cancel
-                                                    </button>
+                                                    {booking.bookingStatus === "PENDING" && (
+                                                        <button
+                                                            onClick={() => {
+                                                                setDeleteId(booking?.bookingId);
+                                                                setOpenDelete(true);
+                                                            }}
+                                                            className="flex items-center justify-center gap-1 px-3 py-2 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+                                                            title="Cancel Booking"
+                                                        >
+                                                            <FiTrash2 size={14} /> Cancel
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </td>
                                         </tr>

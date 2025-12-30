@@ -7,13 +7,12 @@ import {
     FiUser,
     FiLogOut,
     FiCheckCircle,
-    FiInfo,
-    FiAlertCircle,
 } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdminProfile } from "../../../store/slice/userSlice";
 import { logout } from "../../../store/slice/loginSlice";
+import { markAllRead } from "../../../store/slice/notificationSlice";
 import { Link } from "react-router-dom";
 import Image from "../../../common/Image";
 
@@ -21,28 +20,6 @@ const placeholders = [
     "Search luxury villas...",
     "Search villas by location...",
     "Search villas by budget...",
-];
-
-const notifications = [
-    {
-        text: "New villa inquiry received",
-        icon: <FiInfo />,
-        color: "text-blue-500",
-    },
-    {
-        text: "Booking confirmed successfully",
-        icon: <FiCheckCircle />,
-        color: "text-green-500",
-        extra: "+2.59%",
-        extraColor: "text-green-500",
-    },
-    {
-        text: "Payment pending",
-        icon: <FiAlertCircle />,
-        color: "text-red-500",
-        extra: "-0.95%",
-        extraColor: "text-blue-500",
-    },
 ];
 
 const Header = () => {
@@ -53,9 +30,14 @@ const Header = () => {
     const [inputValue, setInputValue] = useState("");
 
     const dispatch = useDispatch();
+
     const { userData } = useSelector((state) => state.user);
+    const { list, unreadCount } = useSelector(
+        (state) => state.notifications
+    );
 
     const notificationRef = useRef(null);
+
 
     useEffect(() => {
         dispatch(getAdminProfile());
@@ -73,14 +55,21 @@ const Header = () => {
         return () => clearInterval(interval);
     }, [inputValue]);
 
+
     const handleLogout = () => {
         dispatch(logout());
         setOpenProfile(false);
     };
 
+    const handleOpenNotifications = () => {
+        setOpenNotifications(true);
+        dispatch(markAllRead());
+    };
+
+
     return (
         <header
-            className="w-full h-16 px-6 flex items-center justify-between transition-colors"
+            className="w-full h-16 px-6 flex items-center justify-between"
             style={{
                 background: "var(--bg)",
                 borderBottom: "1px solid var(--border)",
@@ -88,7 +77,7 @@ const Header = () => {
             }}
         >
             <div
-                className="flex items-center gap-2 px-3 py-2 w-[60%] relative rounded-md"
+                className="flex items-center gap-2 px-3 py-2 w-[60%] rounded-md relative"
                 style={{
                     background: "var(--card-bg)",
                     border: "1px solid var(--border)",
@@ -119,7 +108,6 @@ const Header = () => {
                     />
                 </div>
             </div>
-
             <div className="flex items-center gap-4 relative">
                 <button
                     onClick={() => setDarkMode((p) => !p)}
@@ -128,11 +116,10 @@ const Header = () => {
                 >
                     {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
                 </button>
-
                 <div
                     ref={notificationRef}
                     className="relative"
-                    onMouseEnter={() => setOpenNotifications(true)}
+                    onMouseEnter={handleOpenNotifications}
                     onMouseLeave={() => setOpenNotifications(false)}
                 >
                     <button
@@ -140,9 +127,12 @@ const Header = () => {
                         style={{ background: "var(--card-bg)" }}
                     >
                         <FiBell size={22} />
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                            3
-                        </span>
+
+                        {unreadCount > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                                {unreadCount}
+                            </span>
+                        )}
                     </button>
 
                     <AnimatePresence>
@@ -162,44 +152,68 @@ const Header = () => {
                                     Notifications
                                 </div>
 
-                                <div className="px-4 py-3 space-y-4">
-                                    {notifications.map((item, i) => (
-                                        <div
-                                            key={i}
-                                            className="flex items-center justify-between gap-3"
-                                        >
-                                            <div className="flex items-center gap-3">
+                                <div className="px-4 py-3 space-y-4 max-h-80 overflow-y-auto">
+                                    {list?.length === 0 ? (
+                                        <p className="text-sm text-center text-gray-400">
+                                            No notifications
+                                        </p>
+                                    ) : (
+                                        list?.map((item, i) => (
+                                            <div
+                                                key={item.bookingId || item.email || i}
+                                                className="flex items-start gap-3"
+                                            >
                                                 <span
-                                                    className={`w-8 h-8 rounded-full flex items-center justify-center ${item.color}`}
+                                                    className={`w-8 h-8 rounded-full flex items-center justify-center ${item.type === "USER_REGISTRATION"
+                                                        ? "text-blue-500"
+                                                        : "text-green-500"
+                                                        }`}
                                                     style={{ background: "var(--card-bg)" }}
                                                 >
-                                                    {item.icon}
+                                                    {item.type === "USER_REGISTRATION" ? (
+                                                        <FiUser />
+                                                    ) : (
+                                                        <FiCheckCircle />
+                                                    )}
                                                 </span>
-                                                <span className="text-sm">{item.text}</span>
+                                                <div>
+                                                    {item.type === "USER_REGISTRATION" && (
+                                                        <>
+                                                            <p className="text-xs text-gray-500">
+                                                                {item.userName}  {item.userEmail}
+                                                            </p>
+                                                        </>
+                                                    )}
+                                                    {item.type === "USER_BOOKING" && (
+                                                        <>
+                                                            <p className="text-xs font-medium">
+                                                                🏡 {item.villaName} booked
+                                                            </p>
+                                                            <p className="text-xs text-gray-500">
+                                                                ₹{item.amount} • {item.createdAt}
+                                                            </p>
+                                                        </>
+                                                    )}
+                                                </div>
                                             </div>
-
-                                            {item.extra && (
-                                                <span
-                                                    className={`text-sm font-medium ${item.extraColor}`}
-                                                >
-                                                    {item.extra}
-                                                </span>
-                                            )}
-                                        </div>
-                                    ))}
+                                        ))
+                                    )}
                                 </div>
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
-
                 <div
                     className="relative"
                     onMouseEnter={() => setOpenProfile(true)}
                     onMouseLeave={() => setOpenProfile(false)}
                 >
                     <Image
-                        src={userData?.profilePhoto ? userData?.profilePhoto : "https://i.pravatar.cc/40"}
+                        src={
+                            userData?.profilePhoto
+                                ? userData.profilePhoto
+                                : "https://i.pravatar.cc/40"
+                        }
                         alt="profile"
                         className="rounded-full cursor-pointer w-10 h-10 object-cover"
                     />
@@ -214,13 +228,16 @@ const Header = () => {
                                 className="absolute right-0 mt-3 w-40 shadow-lg rounded-lg overflow-hidden z-50"
                                 style={{ background: "var(--bg)" }}
                             >
-                                <Link to={"/profile"} className="flex items-center gap-2 px-4 py-2 w-full ">
+                                <Link
+                                    to="/profile"
+                                    className="flex items-center gap-2 px-4 py-2"
+                                >
                                     <FiUser size={16} /> Profile
                                 </Link>
 
                                 <button
                                     onClick={handleLogout}
-                                    className="flex items-center cursor-pointer gap-2 px-4 py-2 w-full text-red-500 "
+                                    className="flex items-center gap-2 px-4 py-2 text-red-500 w-full"
                                 >
                                     <FiLogOut size={16} /> Logout
                                 </button>

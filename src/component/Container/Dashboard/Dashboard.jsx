@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-    FiEye,
     FiShoppingCart,
-    FiBox,
     FiUsers
 } from "react-icons/fi";
 
@@ -20,6 +18,11 @@ import {
 } from "chart.js";
 
 import { Line, Bar } from "react-chartjs-2";
+import { CalendarCheck, LucideHome } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { getDashboardStats } from "../../../store/slice/dashboardSlice";
+import { formatCurrency, formatDate } from "../../../utils/formatters";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(
     CategoryScale,
@@ -33,36 +36,6 @@ ChartJS.register(
     Filler
 );
 
-const stats = [
-    {
-        title: "Total Views",
-        value: "$3.456K",
-        change: "+0.43%",
-        icon: <FiEye />,
-        color: "var(--text-green)",
-    },
-    {
-        title: "Total Profit",
-        value: "$45.2K",
-        change: "+4.35%",
-        icon: <FiShoppingCart />,
-        color: "var(--text-green)",
-    },
-    {
-        title: "Total Products",
-        value: "2,450",
-        change: "+2.59%",
-        icon: <FiBox />,
-        color: "var(--text-green)",
-    },
-    {
-        title: "Total Users",
-        value: "3,456",
-        change: "-0.95%",
-        icon: <FiUsers />,
-        color: "var(--text-blue)",
-    },
-];
 
 const lineData = {
     labels: ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
@@ -103,7 +76,50 @@ const barData = {
 };
 
 const Dashboard = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { stats } = useSelector(
+        (state) => state.dashboard
+    );
     const [selectedPeriod, setSelectedPeriod] = useState("Day");
+
+    useEffect(() => {
+        dispatch(getDashboardStats());
+    }, [dispatch]);
+
+
+
+    const stat = [
+        {
+            title: "Total Booking",
+            value: stats?.summary?.totalBookings ?? 0,
+            change: "+0.43%",
+            icon: <CalendarCheck />,
+            color: "var(--text-green)",
+        },
+        {
+            title: "Total Revenue",
+            value: `₹${stats?.summary?.totalRevenue ?? 0}`,
+            change: "+4.35%",
+            icon: <FiShoppingCart />,
+            color: "var(--text-green)",
+        },
+        {
+            title: "Total Villas",
+            value: stats?.summary?.totalVillas ?? 0,
+            change: "+2.59%",
+            icon: <LucideHome />,
+            color: "var(--text-green)",
+        },
+        {
+            title: "Total Users",
+            value: stats?.summary?.totalActiveUsers ?? 0,
+            change: "-0.95%",
+            icon: <FiUsers />,
+            color: "var(--text-blue)",
+        },
+    ];
+
 
     return (
         <div
@@ -111,7 +127,7 @@ const Dashboard = () => {
             style={{ backgroundColor: "var(--bg)", color: "var(--text)" }}
         >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                {stats?.map((item, index) => (
+                {stat?.map((item, index) => (
                     <div
                         key={index}
                         className="rounded-xl p-5 shadow-lg"
@@ -175,6 +191,64 @@ const Dashboard = () => {
                         <Bar data={barData} />
                     </div>
                 </div>
+            </div>
+            <div
+                className="mt-6 rounded-xl p-6 shadow-lg"
+                style={{ backgroundColor: "var(--card-bg)" }}
+            >
+                <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold">Recent Bookings</h3>
+                    <button
+                        onClick={() => navigate("/booking")}
+                        className=" font-medium bg-gray-900 p-2 cursor-pointer text-xs text-white rounded-sm"
+                    >
+                        View All Bookings
+                    </button>
+                </div>
+
+                {stats?.recentBookings?.length > 0 ? (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead>
+                                <tr
+                                    className="text-left"
+                                    style={{ color: "var(--muted-text)" }}
+                                >
+                                    <th className="pb-3">Booking ID</th>
+                                    <th className="pb-3">Customer</th>
+                                    <th className="pb-3">Villa</th>
+                                    <th className="pb-3">Date</th>
+                                    <th className="pb-3 text-right">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {stats?.recentBookings?.map((booking) => (
+                                    <tr
+                                        key={booking.bookingId}
+                                        className="border-t"
+                                        style={{ borderColor: "var(--border)" }}
+                                    >
+                                        <td className="py-3 font-medium">
+                                            {booking.bookingId}
+                                        </td>
+                                        <td className="py-3">{booking.customerName}</td>
+                                        <td className="py-3">{booking.villaName}</td>
+                                        <td className="py-3">
+                                            {formatDate(booking.createdAt)}
+                                        </td>
+                                        <td className="py-3 text-right font-semibold">
+                                            {formatCurrency(booking.totalAmount)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <p style={{ color: "var(--muted-text)" }}>
+                        No recent bookings found
+                    </p>
+                )}
             </div>
         </div>
     );

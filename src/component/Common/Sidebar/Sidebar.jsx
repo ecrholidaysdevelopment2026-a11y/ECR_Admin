@@ -48,16 +48,10 @@ const Sidebar = () => {
                     <NavLink
                         to="/"
                         className={({ isActive }) =>
-                            `${baseLink} ${isActive ? "bg-teal-700 text-white" : ""
+                            `${baseLink} ${isActive
+                                ? "bg-teal-700 text-white"
+                                : ""
                             }`
-                        }
-                        style={!window.location.pathname === "/" ? { color: "var(--text)" } : {}}
-                        onMouseEnter={(e) =>
-                            !e.currentTarget.classList.contains("bg-teal-700") &&
-                            (e.currentTarget.style.background = "var(--card-bg)")
-                        }
-                        onMouseLeave={(e) =>
-                            (e.currentTarget.style.background = "transparent")
                         }
                     >
                         <AiOutlineDashboard className="text-xl" />

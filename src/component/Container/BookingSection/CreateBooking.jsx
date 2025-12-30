@@ -19,15 +19,19 @@ import {
 import { getAllVillas } from "../../../store/slice/villaSlice";
 import { getAllLocations } from "../../../store/slice/locationSlice";
 import { successAlert, errorAlert } from "../../../utils/alertService";
+import { getAllExtraServices } from "../../../store/slice/serviceSlice";
+import MultiSelectDropdown from "../../../common/MultiSelectDropdown";
 
 const CreateBooking = ({ bookingData, onBack }) => {
     const dispatch = useDispatch();
-
+    const { services } = useSelector((state) => state.service);
     const { loading, message, error } = useSelector((state) => state.booking);
     const { villas } = useSelector((state) => state.villa);
     const { locations } = useSelector((state) => state.locations);
 
+
     useEffect(() => {
+        dispatch(getAllExtraServices());
         dispatch(getAllVillas());
         dispatch(getAllLocations());
     }, [dispatch]);
@@ -37,7 +41,6 @@ const CreateBooking = ({ bookingData, onBack }) => {
         locationId: "",
         checkInDate: "",
         checkOutDate: "",
-        basePrice: "",
         gstPercentage: 0,
         igstPercentage: 0,
         paymentMethod: "RAZORPAY",
@@ -48,16 +51,18 @@ const CreateBooking = ({ bookingData, onBack }) => {
         adults: 1,
         children: 0,
         notes: "",
+        promoCode: "",
+        extraServices: [],
     });
+
 
     useEffect(() => {
         if (bookingData) {
             setForm({
-                villaId: bookingData?.villaId,
-                locationId: bookingData?.locationId,
-                checkInDate: bookingData?.checkInDate,
-                checkOutDate: bookingData?.checkOutDate,
-                basePrice: bookingData?.basePrice,
+                villaId: bookingData?.villaId?._id || bookingData?.villaId,
+                locationId: bookingData?.locationId?._id || bookingData?.locationId,
+                checkInDate: bookingData?.checkInDate?.slice(0, 10),
+                checkOutDate: bookingData?.checkOutDate?.slice(0, 10),
                 gstPercentage: bookingData?.gstPercentage,
                 igstPercentage: bookingData?.igstPercentage,
                 paymentMethod: bookingData?.paymentMethod,
@@ -68,9 +73,16 @@ const CreateBooking = ({ bookingData, onBack }) => {
                 adults: bookingData?.guestDetails?.adults || 1,
                 children: bookingData?.guestDetails?.children || 0,
                 notes: bookingData?.notes || "",
+                promoCode: bookingData?.promo?.code || "",
+                extraServices: Array.isArray(bookingData?.extraServices)
+                    ? bookingData.extraServices.map(
+                        (service) => service.extraServiceId
+                    )
+                    : [],
             });
         }
     }, [bookingData]);
+
 
     const filteredVillas = form.locationId
         ? villas.filter(
@@ -98,10 +110,11 @@ const CreateBooking = ({ bookingData, onBack }) => {
             locationId: form.locationId,
             checkInDate: form.checkInDate,
             checkOutDate: form.checkOutDate,
-            basePrice: Number(form.basePrice),
             gstPercentage: Number(form.gstPercentage),
             igstPercentage: Number(form.igstPercentage),
             paymentMethod: form.paymentMethod,
+            promoCode: form.promoCode,
+            extraServices: form.extraServices,
             customer: {
                 fullName: form.fullName,
                 email: form.email,
@@ -116,7 +129,7 @@ const CreateBooking = ({ bookingData, onBack }) => {
         };
 
         if (bookingData) {
-            dispatch(updateBooking({ id: bookingData._id, payload }));
+            dispatch(updateBooking({ id: bookingData?.bookingId, payload }));
         } else {
             dispatch(createBooking(payload));
         }
@@ -148,7 +161,6 @@ const CreateBooking = ({ bookingData, onBack }) => {
                     {bookingData ? "Update Booking" : "Create Booking"}
                 </h1>
             </div>
-
             <form
                 onSubmit={handleSubmit}
                 className="grid grid-cols-2 gap-4 p-6 rounded-xl shadow-2xl"
@@ -179,6 +191,18 @@ const CreateBooking = ({ bookingData, onBack }) => {
                             : "Select Location First"
                     }
                 />
+                <MultiSelectDropdown
+                    label="Select Service"
+                    options={services}
+                    selected={form.extraServices}
+                    onChange={(ids) =>
+                        setForm((prev) => ({ ...prev, extraServices: ids }))
+                    }
+                    multiple
+                    searchable
+                    labelKey="name"
+                    placeholder="Select Service"
+                />
 
                 <InputField
                     type="date"
@@ -194,9 +218,16 @@ const CreateBooking = ({ bookingData, onBack }) => {
                 />
 
                 <InputField
-                    name="basePrice"
-                    placeholder="Base Price"
-                    value={form.basePrice}
+                    name="promoCode"
+                    placeholder="Promo Code"
+                    value={form.promoCode}
+                    onChange={handleChange}
+                />
+
+                <InputField
+                    type="number"
+                    name="gstPercentage"
+                    value={form.gstPercentage}
                     onChange={handleChange}
                 />
 
@@ -238,6 +269,7 @@ const CreateBooking = ({ bookingData, onBack }) => {
                     onChange={handleChange}
                 />
 
+
                 <div className="col-span-2">
                     <textarea
                         name="notes"
@@ -248,7 +280,6 @@ const CreateBooking = ({ bookingData, onBack }) => {
                         rows={5}
                     />
                 </div>
-
                 <div className="col-span-2 flex justify-end gap-3 pt-4">
                     <Button type="submit" loading={loading}>
                         {bookingData ? "Update Booking" : "Create Booking"}
