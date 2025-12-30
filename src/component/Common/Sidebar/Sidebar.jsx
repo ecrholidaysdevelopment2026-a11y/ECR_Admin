@@ -126,7 +126,7 @@ const Sidebar = () => {
                     {[
                         { to: "/profile", label: "Profile", icon: <AiOutlineSetting /> },
                         { to: "/booking", label: "Booking", icon: <MdOutlineProductionQuantityLimits /> },
-                        { to: "/offers", label: "Offers", icon: <FaGift /> },
+                        // { to: "/offers", label: "Offers", icon: <FaGift /> },
                         { to: "/users", label: "Users", icon: <FaUserCheck /> },
                     ].map(({ to, label, icon }) => (
                         <NavLink
