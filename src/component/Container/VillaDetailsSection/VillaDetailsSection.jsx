@@ -28,6 +28,7 @@ const VillaDetailsSection = ({ slug }) => {
         (state) => state.villa
     );
 
+    
     useEffect(() => {
         if (slug) {
             dispatch(getVillaBySlug(slug));
@@ -257,38 +258,29 @@ const VillaDetailsSection = ({ slug }) => {
                 </div>
                 {selectedVilla?.locationId?.mapLink && (
                     <div className="mb-8">
-                        <div className="mb-4">
-                            <h2 className="text-lg font-semibold text-gray-900 mb-1">Location</h2>
-                            <div className="flex items-center gap-2 mb-3">
-                                <MapPin className="w-4 h-4 text-gray-500" />
-                                <span className="font-medium">{selectedVilla.locationId.locationName}</span>
-                                <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                                    {selectedVilla.locationId.villaCount} villas in area
-                                </span>
-                            </div>
-                        </div>
+                        <h2 className="text-lg font-semibold text-gray-900 mb-1">Location</h2>
 
-                        <div className="h-[300px] rounded-lg overflow-hidden border border-gray-200">
+                        <div className="h-[300px] rounded-lg overflow-hidden border">
                             <MapPicker
                                 isInput={false}
-                                initialPosition={getLatLngFromMapLink(selectedVilla.locationId.mapLink)}
-                                onSelect={(link) => console.log("Selected map link:", link)}
+                                initialPosition={getLatLngFromMapLink(selectedVilla?.locationId?.mapLink)}
+                                onSelect={() => { }}
                             />
                         </div>
 
                         <div className="mt-3">
                             <a
-                                href={selectedVilla.locationId.mapLink}
+                                href={selectedVilla?.locationId?.mapLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
+                                className="text-sm text-blue-600"
                             >
-                                <MapPin className="w-3 h-3" />
-                                View on map
+                                View on Google Map
                             </a>
                         </div>
                     </div>
                 )}
+
                 <div className="mb-8 pt-6 border-t border-gray-100">
                     <h2 className="text-lg font-semibold text-gray-900 mb-4">Details</h2>
                     <div className="grid grid-cols-1 gap-1">
