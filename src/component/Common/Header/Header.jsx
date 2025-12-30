@@ -208,6 +208,9 @@ const Header = () => {
                                                             <p className="text-xs text-gray-500">
                                                                 {item.userName}  {item.userEmail}
                                                             </p>
+                                                            <p>
+                                                                / {item.createdAt}
+                                                            </p>
                                                         </>
                                                     )}
                                                     {item.type === "USER_BOOKING" && (
@@ -216,7 +219,7 @@ const Header = () => {
                                                                 🏡 {item.villaName} booked
                                                             </p>
                                                             <p className="text-xs text-gray-500">
-                                                                ₹{item.amount} • {item.createdAt}
+                                                                ₹{item.amount} / {item.createdAt}
                                                             </p>
                                                         </>
                                                     )}

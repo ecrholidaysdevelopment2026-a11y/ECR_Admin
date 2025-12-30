@@ -279,7 +279,7 @@ const CreateBooking = ({ bookingData, onBack }) => {
                     onSubmit={handleStep1Submit}
                     className="max-w-2xl mx-auto p-8 rounded-xl shadow-xl bg-white"
                 >
-                    <h2 className="text-xl font-bold text-gray-800 mb-6 pb-3 border-b">
+                    <h2 className="text-xl font-bold text-gray-800 mb-6 pb-3 border-b border-gray-300">
                         Step 1: Select Location, Dates & Guests
                     </h2>
                     <div className="space-y-6">
@@ -402,10 +402,10 @@ const CreateBooking = ({ bookingData, onBack }) => {
                                 </div>
                             </div>
                         )}
-                        <div className="flex justify-end gap-4 pt-6 border-t">
+                        <div className="flex justify-end gap-4 pt-6 border-t border-gray-300">
                             <Button
                                 type="button"
-                                className="bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                className="bg-gray-800 text-gray-700 hover:bg-gray-600"
                                 onClick={onBack}
                             >
                                 Cancel
