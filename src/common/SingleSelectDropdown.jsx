@@ -76,7 +76,7 @@ const SingleSelectDropdown = ({
             </div>
 
             {open && (
-                <div className="absolute w-full mt-1 bg-white shadow-lg border border-gray-300 rounded-lg z-30 max-h-64 overflow-y-auto">
+                <div className="absolute w-full mt-1 bg-white shadow-lg border border-gray-300 rounded-sm z-30 max-h-64 overflow-y-auto">
                     {searchable && (
                         <div className="p-2 border-b border-gray-300 flex items-center gap-2">
                             <Search size={15} className="text-gray-500" />
@@ -93,14 +93,13 @@ const SingleSelectDropdown = ({
                     {filteredOptions?.map((item) => (
                         <div
                             key={item._id}
-                            className={`px-2 py-1 cursor-pointer hover:bg-gray-100 
+                            className={`p-2  cursor-pointer hover:bg-gray-100 
                                 ${value === item._id ? "bg-gray-200 font-semibold" : ""}`}
                             onClick={() => handleSelect(item._id)}
                         >
                             {item[labelKey]}
                         </div>
                     ))}
-
                     {filteredOptions.length === 0 && (
                         <p className="p-3 text-gray-400 text-sm">No results</p>
                     )}

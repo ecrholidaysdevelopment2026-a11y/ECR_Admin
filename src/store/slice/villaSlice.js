@@ -126,10 +126,33 @@ export const getPopularVillas = createAsyncThunk(
   }
 );
 
+export const searchVillas = createAsyncThunk(
+  "villas/search",
+  async (params, thunkAPI) => {
+    try {
+      const queryString = params
+        ? "?" + new URLSearchParams(params).toString()
+        : "";
+      const response = await FetchApi({
+        endpoint: `/user/villas/search${queryString}`,
+        method: "GET",
+      });
+
+      if (response?.data?.success === false) {
+        return thunkAPI.rejectWithValue(response?.data?.data?.message);
+      }
+      return response?.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message || "Failed to search villas");
+    }
+  }
+);
+
 const villaSlice = createSlice({
   name: "villa",
   initialState: {
     villas: [],
+    searchResults: [],
     selectedVilla: null,
     loading: false,
     deleteLoading: false,
@@ -234,6 +257,18 @@ const villaSlice = createSlice({
       .addCase(getPopularVillas.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(searchVillas.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchVillas.fulfilled, (state, action) => {
+        state.loading = false;
+        state.searchResults = action.payload || [];
+      })
+      .addCase(searchVillas.rejected, (state, action) => {
+        state.loading = false;
+        state.searchError = action.payload || "Search failed";
       });
   },
 });
