@@ -28,6 +28,8 @@ const Header = () => {
     const [openNotifications, setOpenNotifications] = useState(false);
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
     const [inputValue, setInputValue] = useState("");
+    const [soundEnabled, setSoundEnabled] = useState(true);
+    const audioRef = useRef(null);
 
     const dispatch = useDispatch();
 
@@ -65,6 +67,30 @@ const Header = () => {
         setOpenNotifications(true);
         dispatch(markAllRead());
     };
+
+    useEffect(() => {
+        window.__NOTIFICATION_SOUND_ENABLED__ = soundEnabled;
+    }, [soundEnabled]);
+
+
+    useEffect(() => {
+        audioRef.current = new Audio("/sounds/notification.mp3");
+        audioRef.current.volume = 0.6;
+
+        const unlockAudio = () => {
+            audioRef.current
+                ?.play()
+                .then(() => {
+                    audioRef.current.pause();
+                    audioRef.current.currentTime = 0;
+                })
+                .catch(() => { });
+            window.removeEventListener("click", unlockAudio);
+        };
+
+        window.addEventListener("click", unlockAudio);
+        return () => window.removeEventListener("click", unlockAudio);
+    }, []);
 
 
     return (
