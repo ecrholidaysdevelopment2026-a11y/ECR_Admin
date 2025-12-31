@@ -15,6 +15,7 @@ import { logout } from "../../../store/slice/loginSlice";
 import { markAllRead } from "../../../store/slice/notificationSlice";
 import { Link } from "react-router-dom";
 import Image from "../../../common/Image";
+import { formatCurrency, formatDate } from "../../../utils/formatters";
 
 const placeholders = [
     "Search luxury villas...",
@@ -209,7 +210,7 @@ const Header = () => {
                                                                 {item.userName}  {item.userEmail}
                                                             </p>
                                                             <p>
-                                                                / {item.createdAt}
+                                                                / {formatDate(item.createdAt)}
                                                             </p>
                                                         </>
                                                     )}
@@ -219,7 +220,7 @@ const Header = () => {
                                                                 🏡 {item.villaName} booked
                                                             </p>
                                                             <p className="text-xs text-gray-500">
-                                                                ₹{item.amount} / {item.createdAt}
+                                                                {formatCurrency(item.amount)} / {formatDate(item.createdAt)}
                                                             </p>
                                                         </>
                                                     )}
