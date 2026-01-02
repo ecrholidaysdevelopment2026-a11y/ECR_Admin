@@ -29,6 +29,8 @@ const CreateVilla = ({ formData, onBack }) => {
         amenities,
     } = useSelector((state) => state.amenities);
 
+    const { services } = useSelector((state) => state.service);
+
     const [form, setForm] = useState({
         villaName: "",
         slug: "",
@@ -41,6 +43,8 @@ const CreateVilla = ({ formData, onBack }) => {
         attributes: [],
         surrounding: [],
         amenities: [],
+        beds: "",
+        bedrooms: "",
         faq: [],
         map: null,
         price: 0,
@@ -64,6 +68,7 @@ const CreateVilla = ({ formData, onBack }) => {
         dispatch(getAllLocations());
     }, [dispatch]);
 
+
     useEffect(() => {
         if (formData) {
             setForm({
@@ -76,6 +81,8 @@ const CreateVilla = ({ formData, onBack }) => {
                     Array.isArray(formData?.images?.villaGallery) ? formData?.images?.villaGallery : [],
                 overview: formData.overview || "",
                 highlights: formData.highlights || [],
+                bedrooms: formData?.bedrooms || {},
+                beds: formData?.beds || {},
                 attributes: formData.attributes || [],
                 surrounding: formData.surrounding || [],
                 amenities: formData.amenities || [],
@@ -133,26 +140,6 @@ const CreateVilla = ({ formData, onBack }) => {
         });
     };
 
-    const handleArrayFieldChange = (field, index, value) => {
-        setForm((p) => {
-            const arr = [...p[field]];
-            arr[index] = value;
-            return { ...p, [field]: arr };
-        });
-    };
-
-    const addArrayField = (field) => {
-        setForm((p) => ({ ...p, [field]: [...p[field], ""] }));
-    };
-
-    const removeArrayField = (field, index) => {
-        setForm((p) => {
-            const arr = [...p[field]];
-            arr.splice(index, 1);
-            return { ...p, [field]: arr };
-        });
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!form.villaName.trim()) return warningAlert("Villa name is required");
@@ -166,6 +153,8 @@ const CreateVilla = ({ formData, onBack }) => {
         form.villaGallery.forEach((img) => fd.append("villaGallery", img));
         fd.append("overview", form.overview);
         form.highlights.forEach((v) => fd.append("highlights[]", v));
+        fd.append("bedrooms", form.bedrooms);
+        fd.append("beds", form?.beds);
         form.attributes.forEach((v) => fd.append("attributes[]", v));
         form.surrounding.forEach((v) => fd.append("surrounding[]", v));
         form.amenities.forEach((v) => fd.append("amenities[]", v));
@@ -252,24 +241,23 @@ const CreateVilla = ({ formData, onBack }) => {
                         placeholder="Select Amenities"
                     />
                     <div>
-                        <label className="font-medium">Highlights</label>
-                        {form?.highlights?.map((val, idx) => (
-                            <div key={idx} className="flex gap-2 mt-1">
-                                <input
-                                    type="text"
-                                    value={val}
-                                    onChange={(e) => handleArrayFieldChange("highlights", idx, e.target.value)}
-                                    className="border p-2 flex-1 rounded border-gray-300"
-                                />
-                                <button type="button" onClick={() => removeArrayField("highlights", idx)}>
-                                    <X size={16} />
-                                </button>
-                            </div>
-                        ))}
-                        <button type="button" onClick={() => addArrayField("highlights")} className="text-blue-600 mt-1">
-                            + Add Highlight
-                        </button>
+                        <MultiSelectDropdown
+                            label="Select Services"
+                            options={services}
+                            selected={form.highlights}
+                            onChange={(ids) =>
+                                setForm((prev) => ({ ...prev, highlights: ids }))
+                            }
+                            multiple={true}
+                            searchable={true}
+                            labelKey="highlights"
+                            placeholder="Select Services"
+                        />
                     </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                    <InputField type="number" name="bedrooms" placeholder="Bedrooms" value={form.bedrooms} onChange={handleChange} />
+                    <InputField type="number" name="beds" placeholder="Beds" value={form.beds} onChange={handleChange} />
                 </div>
                 <div className="border-dashed border-2 p-4 rounded-lg text-center">
                     <input type="file" accept="image/*" className="hidden" id="villa-cover" onChange={handleSingleImage} />
@@ -314,8 +302,8 @@ const CreateVilla = ({ formData, onBack }) => {
                     <InputField type="number" name="maxGuests" placeholder="Max Guests" value={form.maxGuests} onChange={handleChange} />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                    <InputField type="datetime-local" name="checkInTime" placeholder="Check In Time" value={form.checkInTime} onChange={handleChange} />
-                    <InputField type="datetime-local" name="checkOutTime" placeholder="Check Out Time" value={form.checkOutTime} onChange={handleChange} />
+                    <InputField type="time" name="checkInTime" placeholder="Check In Time" value={form.checkInTime} onChange={handleChange} />
+                    <InputField type="time" name="checkOutTime" placeholder="Check Out Time" value={form.checkOutTime} onChange={handleChange} />
                 </div>
                 <div className="flex items-center gap-3">
                     <span className="font-medium">Featured:</span>
