@@ -36,28 +36,12 @@ ChartJS.register(
     Filler
 );
 
+const monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
 
-const lineData = {
-    labels: ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
-    datasets: [
-        {
-            label: "Total Revenue",
-            data: [30, 24, 36, 28, 45, 35, 63, 52, 58, 36, 39, 50],
-            borderColor: "#6366F1",
-            backgroundColor: "rgba(99,102,241,0.2)",
-            fill: true,
-            tension: 0.4
-        },
-        {
-            label: "Total Sales",
-            data: [22, 10, 24, 26, 14, 21, 37, 32, 44, 20, 30, 45],
-            borderColor: "#60A5FA",
-            backgroundColor: "rgba(96,165,250,0.2)",
-            fill: true,
-            tension: 0.4
-        }
-    ]
-};
+
 
 const barData = {
     labels: ["M", "T", "W", "T", "F", "S", "S"],
@@ -82,7 +66,7 @@ const Dashboard = () => {
         (state) => state.dashboard
     );
     const [selectedPeriod, setSelectedPeriod] = useState("Day");
-
+    const graphData = stats?.graph?.data || [];
     useEffect(() => {
         dispatch(getDashboardStats());
     }, [dispatch]);
@@ -120,6 +104,29 @@ const Dashboard = () => {
         },
     ];
 
+    const lineData = {
+        labels: graphData?.map(
+            (item) => monthNames[item._id.month - 1]
+        ),
+        datasets: [
+            {
+                label: "Total Revenue",
+                data: graphData?.map(item => item.totalRevenue),
+                borderColor: "#6366F1",
+                backgroundColor: "rgba(99,102,241,0.2)",
+                fill: true,
+                tension: 0.4
+            },
+            {
+                label: "Total Bookings",
+                data: graphData?.map(item => item.totalBookings),
+                borderColor: "#60A5FA",
+                backgroundColor: "rgba(96,165,250,0.2)",
+                fill: true,
+                tension: 0.4
+            }
+        ]
+    };
 
     return (
         <div
