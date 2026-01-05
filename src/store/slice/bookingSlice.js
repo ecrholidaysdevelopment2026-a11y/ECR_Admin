@@ -115,14 +115,36 @@ export const updateBookingPayment = createAsyncThunk(
     }
   }
 );
+export const verifyPayment = createAsyncThunk(
+  "booking/verifyPayment",
+  async (payload, thunkAPI) => {
+    const token = thunkAPI.getState()?.auth?.accessToken;
+    try {
+      const response = await FetchApi({
+        endpoint: `/admin/booking/verify-payment`,
+        method: "POST",
+        body: payload,
+        token,
+      });
+      return response?.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.message || "Failed to update booking payment"
+      );
+    }
+  }
+);
 
 const bookingSlice = createSlice({
   name: "booking",
   initialState: {
     bookings: [],
+    bookingData: {},
     selectedBooking: null,
     loading: false,
     cancelLoading: false,
+    createBookingMsg: null,
+    createBookingError: null,
     error: null,
     message: null,
     cancelMessage: null,
@@ -132,10 +154,12 @@ const bookingSlice = createSlice({
     clearBookingMessage(state) {
       state.message = null;
       state.cancelMessage = null;
+      state.createBookingMsg = null;
     },
     clearBookingError(state) {
       state.error = null;
       state.cancelError = null;
+      state.createBookingError = null;
     },
     clearSelectedBooking(state) {
       state.selectedBooking = null;
@@ -148,12 +172,13 @@ const bookingSlice = createSlice({
       })
       .addCase(createBooking.fulfilled, (state, action) => {
         state.loading = false;
-        state.message =
+        state.createBookingMsg =
           action.payload?.message || "Booking created successfully";
+        state.bookingData = action.payload;
       })
       .addCase(createBooking.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.createBookingError = action.payload;
       })
 
       .addCase(getAllBookings.pending, (state) => {
@@ -215,6 +240,19 @@ const bookingSlice = createSlice({
           action.payload?.message || "Booking payment updated successfully";
       })
       .addCase(updateBookingPayment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(verifyPayment.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(verifyPayment.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message =
+          action.payload?.message || "Booking payment updated successfully";
+      })
+      .addCase(verifyPayment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

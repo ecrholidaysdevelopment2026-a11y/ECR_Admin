@@ -340,11 +340,9 @@ const CreateBooking = ({ bookingData, onBack }) => {
                         </div>
                         <div className="grid grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Number of Adults *
-                                </label>
-                                <input
-                                    type="number"
+
+                                <InputField
+                                    type="text"
                                     name="adults"
                                     value={step1Data.adults}
                                     onChange={handleStep1Change}
@@ -355,15 +353,13 @@ const CreateBooking = ({ bookingData, onBack }) => {
                                 <p className="text-xs text-gray-500 mt-1">Minimum 1 adult required</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Number of Children
-                                </label>
-                                <input
-                                    type="number"
+                                <InputField
+                                    type="text"
                                     name="children"
                                     value={step1Data.children}
                                     onChange={handleStep1Change}
                                     className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    step="0.01"
                                     min="0"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">Enter 0 if no children</p>
@@ -587,9 +583,10 @@ const CreateBooking = ({ bookingData, onBack }) => {
                             placeholder="Enter any additional notes or special requests..."
                             value={step2Data.notes}
                             onChange={handleStep2Change}
-                            className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full border border-gray-300 p-3 rounded-lg outline-none focus:outline-none focus:ring-0 focus:border-gray-300"
                             rows={4}
                         />
+
                     </div>
                     <div className="col-span-full flex justify-between gap-4 pt-6 border-t border-gray-300">
                         <div className="flex gap-4">
