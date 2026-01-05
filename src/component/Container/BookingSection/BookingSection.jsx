@@ -144,7 +144,7 @@ const BookingSection = () => {
         <>
             <Payment
                 ref={paymentRef}
-                totalAmount={100 || 0}
+                totalAmount={paymentDetails?.amount || 0}
                 dispatch={dispatch}
             />
 
