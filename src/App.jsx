@@ -16,6 +16,7 @@ import Amenities from "./pages/Amenities/Amenities";
 import Booking from "./pages/Booking/Booking";
 import Promo from "./pages/Promo/Promo";
 import { useAdminNotifications } from "./hooks/useAdminNotifications";
+import BlockedDates from "./pages/BlockedDates/BlockedDates";
 
 function App() {
   useAdminNotifications()
@@ -42,6 +43,7 @@ function App() {
         <Route path="/villadetails/:slug" element={<VillaDetails />} />
         <Route path="/amenities" element={<Amenities />} />
         <Route path="/promo" element={<Promo />} />
+        <Route path="/blocked-dates" element={<BlockedDates />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

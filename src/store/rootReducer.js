@@ -9,6 +9,7 @@ import bookingReducer from "./slice/bookingSlice";
 import promoReducer from "./slice/promoSlice";
 import notificationReducer from "./slice/notificationSlice";
 import dashboardReducer from "./slice/dashboardSlice";
+import blockedDatesReducer from "./slice/blockedDatesSlice";
 
 const reducer = combineReducers({
   user: userReducer,
@@ -21,5 +22,6 @@ const reducer = combineReducers({
   promo: promoReducer,
   notifications: notificationReducer,
   dashboard: dashboardReducer,
+  blockedDates: blockedDatesReducer,
 });
 export default reducer;

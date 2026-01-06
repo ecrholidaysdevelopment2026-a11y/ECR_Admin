@@ -19,7 +19,7 @@ import {
 
 import logo from "../../../assets/ecr-logo.svg";
 import { FaGift, FaUserCheck } from "react-icons/fa";
-import { LucideHome } from "lucide-react";
+import { LucideCalendarX, LucideHome } from "lucide-react";
 
 const Sidebar = () => {
     const [openCatalog, setOpenCatalog] = useState(true);
@@ -96,6 +96,11 @@ const Sidebar = () => {
                                     to: "/amenities",
                                     label: "Amenities",
                                     icon: <LuSofa />,
+                                },
+                                {
+                                    to: "/blocked-dates",
+                                    label: "Blocked Dates",
+                                    icon: <LucideCalendarX />,
                                 },
                                 {
                                     to: "/villa",

@@ -7,7 +7,7 @@
   --font-manrope: "Manrope", sans-serif;
   --font-poppins: "Poppins", sans-serif;
   --font-playfair: "Playfair Display", serif;
-  --icon-bg: #e5e7eb; 
+  --icon-bg: #e5e7eb;
 
   --primary-red: #fa0400;
 
@@ -54,7 +54,6 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
 
 @media (max-width: 768px) {
   p {
