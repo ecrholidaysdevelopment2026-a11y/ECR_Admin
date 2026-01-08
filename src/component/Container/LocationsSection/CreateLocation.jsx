@@ -222,14 +222,6 @@ const CreateLocation = ({ formData, onBack }) => {
                     }
                 />
                 <p>{form?.mapLink}</p>
-                <InputField
-                    type="number"
-                    name="villaCount"
-                    placeholder="Villa Count"
-                    value={form.villaCount}
-                    onChange={handleChange}
-                />
-
                 <textarea
                     name="description"
                     rows={6}
