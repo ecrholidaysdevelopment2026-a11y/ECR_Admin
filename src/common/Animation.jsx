@@ -232,7 +232,7 @@ export const ProfileCart = ({ emojis, logo }) => {
 
                     <motion.div className="relative">
                         <motion.p
-                            className="text-emerald-200 text-sm"
+                            className="text-emerald-600 text-sm"
                             animate={{
                                 scale: [1, 1.02, 1]
                             }}

@@ -122,7 +122,12 @@ const CreateAmenity = ({ amenityData, onBack }) => {
                             key={key}
                             type="button"
                             onClick={() =>
-                                setForm((p) => ({ ...p, icon: key }))
+                                setForm((p) => ({
+                                    ...p,
+                                    icon: key,
+                                    name: p.name || label,
+                                    key: p.key || generateSlug(label),
+                                }))
                             }
                             className={`p-2 flex flex-col items-center rounded-lg border
                 ${form.icon === key

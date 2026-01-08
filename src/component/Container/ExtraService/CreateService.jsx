@@ -23,6 +23,7 @@ const CreateService = ({ serviceData, onBack }) => {
         name: "",
         code: "",
         price: "",
+        description: "",
         status: true,
     });
 
@@ -32,6 +33,7 @@ const CreateService = ({ serviceData, onBack }) => {
                 name: serviceData?.name || "",
                 code: serviceData?.code || "",
                 price: serviceData?.price || "",
+                description: serviceData?.description || "",
                 status: serviceData?.status !== undefined ? serviceData?.status === 1 : true,
             });
         } else {
@@ -44,6 +46,7 @@ const CreateService = ({ serviceData, onBack }) => {
             name: "",
             code: "",
             price: "",
+            description: "",
             status: true,
         });
     };
@@ -75,6 +78,7 @@ const CreateService = ({ serviceData, onBack }) => {
         const payload = {
             name: form.name,
             code: form.code,
+            description: form.description,
             price: Number(form.price),
             status: form.status ? 1 : 0,
         };
@@ -137,6 +141,14 @@ const CreateService = ({ serviceData, onBack }) => {
                     onChange={handleChange}
                 />
 
+                <textarea
+                    name="description"
+                    rows={4}
+                    placeholder="Description"
+                    value={form.description}
+                    onChange={handleChange}
+                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-0 focus:border-gray-300"
+                />
                 <div className="flex items-center gap-3">
                     <span className="font-medium">Status:</span>
                     <div

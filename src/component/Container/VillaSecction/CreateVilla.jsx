@@ -20,6 +20,8 @@ import SingleSelectDropdown from "../../../common/SingleSelectDropdown";
 import MultiSelectDropdown from "../../../common/MultiSelectDropdown";
 import { getAllExtraServices } from "../../../store/slice/serviceSlice";
 import { getAllAmenities } from "../../../store/slice/amenitiesSlice";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const CreateVilla = ({ formData, onBack }) => {
     const dispatch = useDispatch();
@@ -221,15 +223,38 @@ const CreateVilla = ({ formData, onBack }) => {
                         placeholder="Select a location"
                     />
                 </div>
-                <textarea
-                    name="overview"
-                    rows={4}
-                    placeholder="Overview"
-                    value={form.overview}
-                    onChange={handleChange}
-                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-0 focus:border-gray-300"
-                />
+                <div>
+                    <label className="text-sm text-gray-700 mb-1 block">
+                        Villa Overview
+                    </label>
 
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={form.overview}
+                        onChange={(event, editor) => {
+                            const data = editor.getData();
+                            setForm((p) => ({ ...p, overview: data }));
+                        }}
+                        config={{
+                            placeholder: "Write villa overview here...",
+                            toolbar: [
+                                "heading",
+                                "|",
+                                "bold",
+                                "italic",
+                                "link",
+                                "bulletedList",
+                                "numberedList",
+                                "|",
+                                "blockQuote",
+                                "insertTable",
+                                "|",
+                                "undo",
+                                "redo",
+                            ],
+                        }}
+                    />
+                </div>
                 <div className="grid grid-cols-2 gap-3">
                     <MultiSelectDropdown
                         label="Select Amenities"
