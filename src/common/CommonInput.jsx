@@ -30,7 +30,6 @@ export const InputField = ({
   );
 };
 
-
 export const SingleImageUpload = ({
   preview,
   onUpload,

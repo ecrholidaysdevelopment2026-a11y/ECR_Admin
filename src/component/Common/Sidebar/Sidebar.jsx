@@ -49,7 +49,7 @@ const Sidebar = () => {
                         to="/"
                         className={({ isActive }) =>
                             `${baseLink} ${isActive
-                                ? "bg-teal-700 text-white"
+                                ? "bg-teal-700 text-white "
                                 : ""
                             }`
                         }
@@ -88,7 +88,7 @@ const Sidebar = () => {
                                 },
                                 {
                                     to: "/extra-services",
-                                    label: "Extra Service",
+                                    label: "Service",
                                     icon: <LuWrench />,
                                 },
 

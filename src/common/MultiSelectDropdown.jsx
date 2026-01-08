@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronDown, X, Search } from "lucide-react";
 
 const MultiSelectDropdown = ({
@@ -12,6 +12,7 @@ const MultiSelectDropdown = ({
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
     const [filteredOptions, setFilteredOptions] = useState(options);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         const filtered = options.filter((opt) =>
@@ -38,8 +39,21 @@ const MultiSelectDropdown = ({
         onChange(updated);
     };
 
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+                setOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     return (
-        <div className="relative w-full ">
+        <div
+            ref={dropdownRef}
+            className="relative w-full ">
             {label && <label className="text-sm text-gray-700">{label}</label>}
             <div
                 className="border p-2 mt-1 rounded-sm border-gray-300 flex items-center justify-between cursor-pointer min-h-[41px] flex-wrap gap-1"
@@ -50,8 +64,7 @@ const MultiSelectDropdown = ({
                         {multiple ? "Select multiple" : "Select one"}
                     </span>
                 )}
-
-                {selected.map((id) => {
+                {selected?.map((id) => {
                     const item = options.find((o) => o._id === id);
                     return (
                         <span

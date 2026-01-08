@@ -125,7 +125,7 @@ const CreateService = ({ serviceData, onBack }) => {
             >
                 <InputField
                     name="name"
-                    placeholder="Service Name"
+                    placeholder="Service name (Breakfast, Airport Pickup, Pool)"
                     value={form.name}
                     onChange={handleChange}
                 />

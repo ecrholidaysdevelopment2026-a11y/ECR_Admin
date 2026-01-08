@@ -30,6 +30,7 @@ const CreateVilla = ({ formData, onBack }) => {
     } = useSelector((state) => state.amenities);
 
     const { services } = useSelector((state) => state.service);
+    const [coverPreview, setCoverPreview] = useState(null);
 
     const [form, setForm] = useState({
         villaName: "",
@@ -43,16 +44,14 @@ const CreateVilla = ({ formData, onBack }) => {
         attributes: [],
         surrounding: [],
         amenities: [],
-        beds: "",
         bedrooms: "",
+        bathroom: "",
+        offerPercentage: 0,
         faq: [],
         map: null,
         price: 0,
         isOffer: false,
-        offerPrice: 0,
         maxGuests: 0,
-        checkInTime: "",
-        checkOutTime: "",
         isFeatured: false,
     });
 
@@ -82,18 +81,15 @@ const CreateVilla = ({ formData, onBack }) => {
                 overview: formData.overview || "",
                 highlights: formData.highlights || [],
                 bedrooms: formData?.bedrooms || {},
-                beds: formData?.beds || {},
+                bathroom: formData?.bathroom || {},
                 attributes: formData.attributes || [],
                 surrounding: formData.surrounding || [],
                 amenities: formData.amenities || [],
+                offerPercentage: formData.offerPercentage || 0,
                 faq: formData.faq || [],
                 map: formData.map || null,
                 price: formData.price || 0,
-                isOffer: formData.isOffer || false,
-                offerPrice: formData.offerPrice || 0,
                 maxGuests: formData.maxGuests || 0,
-                checkInTime: formData.checkInTime || "",
-                checkOutTime: formData.checkOutTime || "",
                 isFeatured: formData.isFeatured || false,
             });
         }
@@ -114,8 +110,12 @@ const CreateVilla = ({ formData, onBack }) => {
 
     const handleSingleImage = (e) => {
         const file = e.target.files[0];
-        if (file) setForm((p) => ({ ...p, villaImage: file }));
+        if (!file) return;
+
+        setForm((p) => ({ ...p, villaImage: file }));
+        setCoverPreview(URL.createObjectURL(file));
     };
+
 
     const handleGalleryUpload = (e) => {
         const files = Array.from(e.target.files || []);
@@ -154,18 +154,15 @@ const CreateVilla = ({ formData, onBack }) => {
         fd.append("overview", form.overview);
         form.highlights.forEach((v) => fd.append("highlights[]", v));
         fd.append("bedrooms", form.bedrooms);
-        fd.append("beds", form?.beds);
+        fd.append("bathroom", form.bathroom);
+        fd.append("offerPercentage", form.offerPercentage);
         form.attributes.forEach((v) => fd.append("attributes[]", v));
         form.surrounding.forEach((v) => fd.append("surrounding[]", v));
         form.amenities.forEach((v) => fd.append("amenities[]", v));
         form.faq.forEach((v) => fd.append("faq[]", v));
         fd.append("map", JSON.stringify(form.map));
         fd.append("price", form.price);
-        fd.append("isOffer", form.isOffer);
-        fd.append("offerPrice", form.offerPrice);
         fd.append("maxGuests", form.maxGuests);
-        fd.append("checkInTime", form.checkInTime);
-        fd.append("checkOutTime", form.checkOutTime);
         fd.append("isFeatured", form.isFeatured);
 
         if (formData) {
@@ -174,6 +171,12 @@ const CreateVilla = ({ formData, onBack }) => {
             dispatch(createVilla(fd));
         }
     };
+
+    useEffect(() => {
+        if (formData?.images?.villaImage) {
+            setCoverPreview(formData.images.villaImage);
+        }
+    }, [formData]);
 
     useEffect(() => {
         if (message) {
@@ -257,7 +260,7 @@ const CreateVilla = ({ formData, onBack }) => {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                     <InputField type="number" name="bedrooms" placeholder="Bedrooms" value={form.bedrooms} onChange={handleChange} />
-                    <InputField type="number" name="beds" placeholder="Beds" value={form.beds} onChange={handleChange} />
+                    <InputField type="number" name="bathroom" placeholder="Enter Bath Count" value={form.bathroom} onChange={handleChange} />
                 </div>
                 <div className="border-dashed border-2 p-4 rounded-lg text-center">
                     <input type="file" accept="image/*" className="hidden" id="villa-cover" onChange={handleSingleImage} />
@@ -265,8 +268,28 @@ const CreateVilla = ({ formData, onBack }) => {
                         <Upload />
                         <span>Upload Cover Image</span>
                     </label>
-                    {form?.villaImage && <p className="mt-2">{form?.villaImage?.name}</p>}
+                    {coverPreview && (
+                        <div className="relative mt-3 w-full max-w-sm mx-auto">
+                            <Image
+                                src={coverPreview}
+                                className="w-full h-48 rounded-lg object-cover"
+                                alt="Cover Preview"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setForm((p) => ({ ...p, villaImage: null }));
+                                    setCoverPreview(null);
+                                }}
+                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center"
+                            >
+                                <X size={14} />
+                            </button>
+                        </div>
+                    )}
+
                 </div>
+
                 <div className="border-dashed border-2 p-4 rounded-lg text-center mt-2">
                     <input type="file" multiple accept="image/*" className="hidden" id="villa-gallery" onChange={handleGalleryUpload} />
                     <label htmlFor="villa-gallery" className="cursor-pointer flex flex-col items-center gap-2">
@@ -290,20 +313,18 @@ const CreateVilla = ({ formData, onBack }) => {
                         ))}
                     </div>
                 )}
-                <div className="grid grid-cols-2 gap-3 items-center">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 items-center ">
                     <InputField type="number" name="price" placeholder="Price" value={form.price} onChange={handleChange} />
-                    <div className="flex items-center gap-3">
+                    <div className="flex gap-2">
                         <input type="checkbox" checked={form.isOffer} onChange={() => handleToggle("isOffer")} />
                         <span>Is Offer?</span>
                     </div>
+                    <div>
+                        {form.isOffer && <InputField type="number" name="offerPercentage" placeholder="Offer Percentage" value={form.offerPercentage} onChange={handleChange} className="w-full" />}
+                    </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                    {form.isOffer && <InputField type="number" name="offerPrice" placeholder="Offer Price" value={form.offerPrice} onChange={handleChange} />}
                     <InputField type="number" name="maxGuests" placeholder="Max Guests" value={form.maxGuests} onChange={handleChange} />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                    <InputField type="time" name="checkInTime" placeholder="Check In Time" value={form.checkInTime} onChange={handleChange} />
-                    <InputField type="time" name="checkOutTime" placeholder="Check Out Time" value={form.checkOutTime} onChange={handleChange} />
                 </div>
                 <div className="flex items-center gap-3">
                     <span className="font-medium">Featured:</span>
