@@ -16,6 +16,8 @@ import {
 import { SimpleNoVillas } from "../../../common/Animation";
 import CreateVilla from "./CreateVilla";
 import { useNavigate } from "react-router-dom";
+import { getAllBlockedDates } from "../../../store/slice/blockedDatesSlice";
+import AdminCalendar from "../../../common/AdminCalendar";
 
 const VillaSection = () => {
     const navigate = useNavigate()
@@ -24,12 +26,19 @@ const VillaSection = () => {
         (state) => state.villa
     );
 
+    const {
+        blockedDates = [],
+    } = useSelector((state) => state.blockedDates);
     const [search, setSearch] = useState("");
     const [deleteId, setDeleteId] = useState(null);
     const [openDelete, setOpenDelete] = useState(false);
     const [showCreate, setShowCreate] = useState(false);
     const [editData, setEditData] = useState(null);
     const [viewMode, setViewMode] = useState("grid");
+
+    useEffect(() => {
+        dispatch(getAllBlockedDates());
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getAllVillas());
@@ -84,7 +93,14 @@ const VillaSection = () => {
             onAddClick={handleAddVilla}
 
         >
-            <section className="my-5">
+            <div className="flex justify-end py-10">
+                <AdminCalendar
+                    blockedDates={blockedDates}
+                    isMobile={false}
+                />
+            </div>
+
+            <div className="my-5">
                 <div className="flex items-center space-x-2 justify-end mb-4">
                     <button
                         onClick={() => setViewMode("grid")}
@@ -334,7 +350,7 @@ const VillaSection = () => {
                         message="Villa not found. Please try a different search."
                     />
                 )}
-            </section>
+            </div>
 
             <ConfirmDeleteModal
                 loading={deleteLoading}
