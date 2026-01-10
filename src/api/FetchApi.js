@@ -30,11 +30,14 @@ export const FetchApi = async ({
       try {
         json = JSON.parse(rawText);
       } catch {}
+
       const errorMessage =
+        json?.data?.message ||
         json?.data?.errors ||
         json?.errors ||
         json?.message ||
         "Something went wrong";
+
       throw new Error(errorMessage);
     }
     return contentType?.includes("application/json")

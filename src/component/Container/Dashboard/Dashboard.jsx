@@ -23,7 +23,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDashboardStats } from "../../../store/slice/dashboardSlice";
 import { formatCurrency, formatDate } from "../../../utils/formatters";
 import { useNavigate } from "react-router-dom";
+import SelectedCalendar from "../../../common/selectedCalendar";
 
+import { getDailyBookingSummary } from "../../../store/slice/bookingSlice";
+import Image from "../../../common/Image";
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -41,24 +44,6 @@ const monthNames = [
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
-
-
-const barData = {
-    labels: ["M", "T", "W", "T", "F", "S", "S"],
-    datasets: [
-        {
-            label: "Sales",
-            data: [44, 55, 41, 67, 22, 43, 65],
-            backgroundColor: "#6366F1"
-        },
-        {
-            label: "Revenue",
-            data: [14, 23, 21, 9, 12, 27, 15],
-            backgroundColor: "#60A5FA"
-        }
-    ]
-};
-
 const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -67,10 +52,23 @@ const Dashboard = () => {
     );
     const [selectedPeriod, setSelectedPeriod] = useState("Day");
     const graphData = stats?.graph?.data || [];
+    const [date, setDate] = useState(null);
+    const { dailySummary } = useSelector(
+        (state) => state.booking
+    );
+
+
+    useEffect(() => {
+        if (date) {
+            dispatch(getDailyBookingSummary({ date }));
+        }
+    }, [date, dispatch]);
+
+
+
     useEffect(() => {
         dispatch(getDashboardStats());
     }, [dispatch]);
-
 
 
     const stat = [
@@ -191,14 +189,59 @@ const Dashboard = () => {
                     style={{ backgroundColor: "var(--card-bg)" }}
                 >
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold">Profit This Week</h3>
-                        <span style={{ color: "var(--muted-text)" }}>This Week</span>
+                        <h3 className="text-lg font-semibold">Booking Dates</h3>
+                        <span style={{ color: "var(--muted-text)" }}>This Month</span>
                     </div>
-                    <div className="h-64">
-                        <Bar data={barData} />
+                    <div className="flex justify-end py-10">
+                        <SelectedCalendar
+                            onDateSelect={(date) => {
+                                setDate(date);
+                            }}
+                        />
                     </div>
                 </div>
             </div>
+            {date && dailySummary?.length > 0 && (
+                dailySummary?.slice(0, 5)?.map((item) => (
+                    <div
+                        key={item._id}
+                        className="mt-6 rounded-xl p-6 shadow-lg flex gap-5 items-center"
+                        style={{ backgroundColor: "var(--card-bg)" }}
+                    >
+                        <div className="w-32 h-24 rounded-lg overflow-hidden bg-gray-200">
+                            <Image
+                                src={item.villaId.images.villaImage}
+                                alt={item.villaId.villaName}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="text-lg font-semibold text-gray-900">
+                                {item.villaId.villaName}
+                            </h3>
+
+                            <p className="text-sm text-gray-500">
+                                Booking ID: <span className="font-medium">{item.bookingId}</span>
+                            </p>
+
+                            <div className="mt-1 flex items-center gap-3">
+                                <>
+                                    <span className="text-lg font-bold text-green-600">
+                                        ₹{item.villaId.offerPrice}
+                                    </span>
+                                    <span className="text-sm line-through text-gray-400">
+                                        ₹{item.villaId.price}
+                                    </span>
+                                </>
+                                <span className="text-sm text-gray-500">/ night</span>
+                            </div>
+                            <p className="mt-1 text-sm font-semibold text-indigo-600">
+                                Total: ₹{item.totalAmount}
+                            </p>
+                        </div>
+                    </div>
+                ))
+            )}
             <div
                 className="mt-6 rounded-xl p-6 shadow-lg"
                 style={{ backgroundColor: "var(--card-bg)" }}

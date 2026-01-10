@@ -34,6 +34,12 @@ const BookingSection = () => {
     const paymentRef = useRef();
     const paymentDetails = bookingData?.booking?.payment
 
+    const payableAmount =
+        paymentDetails?.payableAmount ??
+        paymentDetails?.pendingAmount ??
+        paymentDetails?.amount ??
+        0;
+
     useEffect(() => {
         dispatch(getAllBookings());
     }, [dispatch]);
@@ -88,11 +94,11 @@ const BookingSection = () => {
         }
     });
 
-    const formatDate = (dateString) => {
-        if (!dateString) return "N/A";
-        return format(new Date(dateString), "dd MMM yyyy");
-    };
-
+    const formatDate = (date) =>
+        new Date(date).toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+        });
 
 
     const handleSelectBooking = (bookingId) => {
@@ -144,7 +150,7 @@ const BookingSection = () => {
         <>
             <Payment
                 ref={paymentRef}
-                totalAmount={paymentDetails?.amount || 0}
+                totalAmount={payableAmount || 0}
                 dispatch={dispatch}
             />
 

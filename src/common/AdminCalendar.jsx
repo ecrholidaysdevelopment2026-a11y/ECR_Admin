@@ -3,14 +3,11 @@ import { useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const AdminCalendar = ({ blockedDates = [] }) => {
-    // 🔒 Always single month
     const [currentMonth, setCurrentMonth] = useState(() => {
-        // Optional: derive year from data
         const year = blockedDates?.[0]
             ? new Date(blockedDates[0].startDate).getFullYear()
             : new Date().getFullYear();
-
-        return new Date(year, 0, 1); // January
+        return new Date(year, 0, 1);
     });
 
     const getDaysInMonth = (year, month) =>
@@ -23,7 +20,6 @@ const AdminCalendar = ({ blockedDates = [] }) => {
         const days = [];
         const firstDay = getFirstDayOfMonth(year, month);
         const totalDays = getDaysInMonth(year, month);
-
         for (let i = 0; i < firstDay; i++) days.push(null);
         for (let d = 1; d <= totalDays; d++) {
             days.push(new Date(year, month, d));
@@ -41,12 +37,18 @@ const AdminCalendar = ({ blockedDates = [] }) => {
         });
     };
 
+    const isPastDate = (date) => {
+        if (!date) return false;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return date < today;
+    };
+
     const handlePrevMonth = () => {
         setCurrentMonth(
             new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1)
         );
     };
-
     const handleNextMonth = () => {
         setCurrentMonth(
             new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1)
@@ -69,7 +71,7 @@ const AdminCalendar = ({ blockedDates = [] }) => {
         return (
             <>
                 <div className="grid grid-cols-7 gap-1 mb-2">
-                    {dayNames.map(d => (
+                    {dayNames?.map(d => (
                         <div
                             key={d}
                             className="text-center text-xs font-medium text-gray-500"
@@ -78,28 +80,35 @@ const AdminCalendar = ({ blockedDates = [] }) => {
                         </div>
                     ))}
                 </div>
-
                 <div className="grid grid-cols-7 gap-1">
-                    {days.map((date, idx) => {
+                    {days?.map((date, idx) => {
                         const blocked = getBlockedInfo(date);
                         const isToday =
                             date &&
-                            date.toDateString() ===
-                            new Date().toDateString();
+                            date.toDateString() === new Date().toDateString();
+                        const past = isPastDate(date);
 
                         return (
                             <div
                                 key={idx}
-                                title={blocked?.reason || ""}
+                                title={
+                                    past
+                                        ? "Past date"
+                                        : blocked?.reason || ""
+                                }
                                 className={`
-                                    h-8 md:h-10 flex items-center justify-center
-                                    text-xs md:text-sm rounded-md
-                                    ${!date ? "invisible" : ""}
-                                    ${blocked ? "text-white" : "text-gray-800"}
-                                    ${isToday ? "border border-blue-500" : ""}
-                                `}
+                h-8 md:h-10 flex items-center justify-center
+                text-xs md:text-sm rounded-full
+                ${!date ? "invisible" : ""}
+                ${past ? "bg-gray-100 text-gray-400 cursor-not-allowed" : ""}
+                ${blocked && !past ? "text-white" : ""}
+                ${isToday ? "border border-blue-500" : ""}
+            `}
                                 style={{
-                                    backgroundColor: blocked?.color || "transparent",
+                                    backgroundColor:
+                                        past
+                                            ? "#f3f4f6"
+                                            : blocked?.color || "transparent",
                                 }}
                             >
                                 {date ? date.getDate() : ""}
@@ -120,12 +129,10 @@ const AdminCalendar = ({ blockedDates = [] }) => {
                 >
                     <FiChevronLeft />
                 </button>
-
                 <h3 className="font-semibold">
                     {monthNames[currentMonth.getMonth()]}{" "}
                     {currentMonth.getFullYear()}
                 </h3>
-
                 <button
                     onClick={handleNextMonth}
                     className="p-2 hover:bg-gray-100 rounded-full"
@@ -133,7 +140,6 @@ const AdminCalendar = ({ blockedDates = [] }) => {
                     <FiChevronRight />
                 </button>
             </div>
-
             {renderMonth()}
         </div>
     );

@@ -16,8 +16,7 @@ import {
 import { SimpleNoVillas } from "../../../common/Animation";
 import CreateVilla from "./CreateVilla";
 import { useNavigate } from "react-router-dom";
-import { getAllBlockedDates } from "../../../store/slice/blockedDatesSlice";
-import AdminCalendar from "../../../common/AdminCalendar";
+import stripHtml from "../../../store/slice/stripHtml";
 
 const VillaSection = () => {
     const navigate = useNavigate()
@@ -26,19 +25,12 @@ const VillaSection = () => {
         (state) => state.villa
     );
 
-    const {
-        blockedDates = [],
-    } = useSelector((state) => state.blockedDates);
     const [search, setSearch] = useState("");
     const [deleteId, setDeleteId] = useState(null);
     const [openDelete, setOpenDelete] = useState(false);
     const [showCreate, setShowCreate] = useState(false);
     const [editData, setEditData] = useState(null);
-    const [viewMode, setViewMode] = useState("grid");
-
-    useEffect(() => {
-        dispatch(getAllBlockedDates());
-    }, [dispatch]);
+    const [viewMode, setViewMode] = useState("list");
 
     useEffect(() => {
         dispatch(getAllVillas());
@@ -93,12 +85,6 @@ const VillaSection = () => {
             onAddClick={handleAddVilla}
 
         >
-            <div className="flex justify-end py-10">
-                <AdminCalendar
-                    blockedDates={blockedDates}
-                    isMobile={false}
-                />
-            </div>
 
             <div className="my-5">
                 <div className="flex items-center space-x-2 justify-end mb-4">
@@ -136,7 +122,7 @@ const VillaSection = () => {
                                             {villa?.villaName}
                                         </h2>
                                         <p className=" text-md mt-1">
-                                            {villa?.locationId?.name || "Location not specified"}
+                                            {villa?.locationId?.locationName || "Location not specified"}
                                         </p>
                                     </div>
                                     <div className="relative">
@@ -174,7 +160,7 @@ const VillaSection = () => {
                                     </div>
                                 </div>
                                 <p className="text-sm mt-1 line-clamp-2">
-                                    {villa?.overview || "No description available"}
+                                    {stripHtml(villa.overview) || "No description"}
                                 </p>
                                 {villa?.images?.villaImage && (
                                     <div className="mt-4">
@@ -183,27 +169,22 @@ const VillaSection = () => {
                                             alt={villa.villaName}
                                             className="w-full h-48 object-cover rounded-lg border border-gray-300"
                                         />
-                                        {villa?.images?.villaGallery?.length > 0 && (
-                                            <div className="flex items-center mt-2 text-sm ">
-                                                <TbView360 className="mr-1" />
-                                                <span>+{villa.images.villaGallery.length} more images</span>
-                                            </div>
-                                        )}
                                     </div>
                                 )}
                                 <div className="mt-4 pt-4 border-t border-gray-200">
-                                    {villa?.highlights?.length > 0 && (
+                                    {villa?.services?.length > 0 && (
                                         <div className="flex overflow-x-auto gap-2 mb-3 scrollbar-hide">
-                                            {villa.highlights.slice(0, 3).map((highlight, index) => (
+                                            {villa.services.slice(0, 3).map((services, index) => (
                                                 <span
                                                     key={index}
                                                     className="px-3 py-1 bg-blue-50 text-black  rounded-full text-xs font-medium whitespace-nowrap"
                                                 >
-                                                    {highlight}
+                                                    {services?.name}
                                                 </span>
                                             ))}
                                         </div>
                                     )}
+                                    <div className="pb-2 text-xs">Badroom {villa?.bedrooms}</div>
                                     <div className="flex justify-between items-center">
                                         <div className="flex items-center space-x-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${villa.status ? "bg-green-500 text-white" : "bg-red-500 text-white"
@@ -256,7 +237,7 @@ const VillaSection = () => {
                                         <td className="px-6 py-4">
                                             <div className="flex items-center">
                                                 {villa?.images?.villaImage && (
-                                                    <div className=" h-12 w-12 mr-3">
+                                                    <div className="  w-50 mr-3">
                                                         <Image
                                                             src={villa.images.villaImage}
                                                             alt={villa.villaName}
@@ -269,14 +250,14 @@ const VillaSection = () => {
                                                         {villa.villaName}
                                                     </div>
                                                     <div className="text-sm line-clamp-1">
-                                                        {villa.overview || "No description"}
+                                                        {stripHtml(villa.overview) || "No description"}
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="text-sm text-gray-900">
-                                                {villa?.locationId?.name || "—"}
+                                                {villa?.locationId?.locationName || "—"}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">

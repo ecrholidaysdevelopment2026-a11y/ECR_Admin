@@ -30,7 +30,6 @@ const CreateBooking = ({ bookingData, onBack }) => {
     const { locations } = useSelector((state) => state.locations);
 
     const [step, setStep] = useState(1);
-    const [filteredVillas, setFilteredVillas] = useState([]);
     const [searchExecuted, setSearchExecuted] = useState(false);
 
     useEffect(() => {
@@ -89,13 +88,6 @@ const CreateBooking = ({ bookingData, onBack }) => {
                     )
                     : [],
             });
-
-            if (bookingData?.locationId) {
-                const filtered = villas.filter(
-                    (villa) => villa.locationId === (bookingData?.locationId?._id || bookingData?.locationId)
-                );
-                setFilteredVillas(filtered);
-            }
         }
     }, [bookingData, villas]);
 

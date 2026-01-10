@@ -135,11 +135,51 @@ export const verifyPayment = createAsyncThunk(
   }
 );
 
+export const getDailyBookingSummary = createAsyncThunk(
+  "booking/getDailySummary",
+  async ({ date }, thunkAPI) => {
+    const token = thunkAPI.getState()?.auth?.accessToken;
+    try {
+      const response = await FetchApi({
+        endpoint: `/admin/booking/daily-summary?date=${date}`,
+        method: "GET",
+        token,
+      });
+      return response?.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.message || "Failed to fetch daily booking summary"
+      );
+    }
+  }
+);
+
+export const getBookedDates = createAsyncThunk(
+  "booking/getBookedDates",
+  async (params = {}, thunkAPI) => {
+    const token = thunkAPI.getState()?.auth?.accessToken;
+    try {
+      const response = await FetchApi({
+        endpoint: "/admin/booking/booked-dates",
+        method: "GET",
+        token,
+      });
+      return response?.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.message || "Failed to fetch booked dates"
+      );
+    }
+  }
+);
+
 const bookingSlice = createSlice({
   name: "booking",
   initialState: {
     bookings: [],
     bookingData: {},
+    dailySummary: [],
+    bookedDates: [],
     selectedBooking: null,
     loading: false,
     cancelLoading: false,
@@ -253,6 +293,30 @@ const bookingSlice = createSlice({
           action.payload?.message || "Booking payment updated successfully";
       })
       .addCase(verifyPayment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(getDailyBookingSummary.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getDailyBookingSummary.fulfilled, (state, action) => {
+        state.loading = false;
+        state.dailySummary = action.payload?.checkIn;
+      })
+      .addCase(getDailyBookingSummary.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(getBookedDates.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getBookedDates.fulfilled, (state, action) => {
+        state.loading = false;
+        state.bookedDates = action.payload;
+      })
+      .addCase(getBookedDates.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

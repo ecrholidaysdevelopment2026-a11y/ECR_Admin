@@ -19,11 +19,12 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
 
     const [formData, setFormData] = useState({
         scope: blockedDateData?.scope || 1,
-        locationId: blockedDateData?.locationId || "",
+        locationId: blockedDateData?.locationId?._id || "",
         villaId: blockedDateData?.villaId || "",
         startDate: blockedDateData?.startDate ? new Date(blockedDateData.startDate) : null,
         endDate: blockedDateData?.endDate ? new Date(blockedDateData.endDate) : null,
         reason: blockedDateData?.reason || "",
+        color: blockedDateData?.color || "#EF4444",
     });
 
     const [filteredVillas, setFilteredVillas] = useState([]);
@@ -70,15 +71,6 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
         }
     }, [message, error, dispatch, onBack]);
 
-    const reasonOptions = [
-        "Maintenance",
-        "Holiday",
-        "Event",
-        "Private Booking",
-        "Weather Conditions",
-        "Other"
-    ];
-
     const scopeOptions = [
         { value: 1, label: "Global (All Villas)", description: "Block all villas" },
         { value: 2, label: "Specific Location", description: "Block all villas in a location" },
@@ -92,6 +84,7 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
             startDate: formData.startDate ? formData.startDate.toISOString().split('T')[0] : null,
             endDate: blockType === "range" && formData.endDate ? formData.endDate.toISOString().split('T')[0] : null,
             reason: formData.reason,
+            color: formData.color,
         };
 
         if (formData.scope === 2 || formData.scope === 3) {
@@ -111,7 +104,6 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
 
     const handleChange = (field, value) => {
         const newFormData = { ...formData, [field]: value };
-
         if (field === "scope") {
             if (value === 1) {
                 newFormData.locationId = "";
@@ -123,7 +115,6 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
         } else if (field === "locationId" && formData.scope === 2) {
             newFormData.villaId = "";
         }
-
         setFormData(newFormData);
     };
 
@@ -152,8 +143,6 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
         }
     };
 
-
-
     return (
         <div className="max-w-2xl mx-auto p-6">
             <button
@@ -165,7 +154,7 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
 
             <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-2xl font-bold mb-2">
-                    {blockedDateData ? 'Edit Blocked Date' : 'Add New Blocked Date'}
+                    {blockedDateData ? 'Edit Blocked Date & Highlights' : 'Add New Blocked Date & Highlights'}
                 </h2>
                 <p className="text-gray-600 mb-6">
                     {blockedDateData ?
@@ -296,21 +285,39 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
                     )}
                     <div className="mb-6">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Reason
+                            Block Background Color
                         </label>
-                        <select
+                        <div className="flex items-center gap-4">
+                            <input
+                                type="color"
+                                value={formData.color}
+                                onChange={(e) => handleChange("color", e.target.value)}
+                                className="w-14 h-10 p-1 border rounded cursor-pointer"
+                            />
+
+                            <span
+                                className="px-3 py-2 rounded text-white text-sm"
+                                style={{ backgroundColor: formData.color }}
+                            >
+                                Preview
+                            </span>
+                            <span className="text-sm text-gray-500">
+                                Used for calendar blocked date background
+                            </span>
+                        </div>
+                    </div>
+                    <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Reason / Notes
+                        </label>
+                        <textarea
                             value={formData.reason}
-                            onChange={(e) => handleChange('reason', e.target.value)}
-                            className="w-full p-3 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-0 focus:border-gray-300"
+                            onChange={(e) => handleChange("reason", e.target.value)}
+                            placeholder="Enter reason for blocking dates (e.g. maintenance, renovation, private booking...)"
+                            rows={4}
+                            className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-0 focus:border-gray-400"
                             required
-                        >
-                            <option value="">Select a reason</option>
-                            {reasonOptions.map((reason) => (
-                                <option key={reason} value={reason}>
-                                    {reason}
-                                </option>
-                            ))}
-                        </select>
+                        />
                     </div>
                     <div className="flex gap-4">
                         <button

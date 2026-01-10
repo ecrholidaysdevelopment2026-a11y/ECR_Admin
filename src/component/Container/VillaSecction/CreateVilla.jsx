@@ -42,12 +42,12 @@ const CreateVilla = ({ formData, onBack }) => {
         villaGallery: [],
         galleryPreview: [],
         overview: "",
-        highlights: [],
+        services: [],
         attributes: [],
         surrounding: [],
         amenities: [],
         bedrooms: "",
-        bathroom: "",
+        bathrooms: "",
         offerPercentage: 0,
         faq: [],
         map: null,
@@ -75,18 +75,23 @@ const CreateVilla = ({ formData, onBack }) => {
             setForm({
                 villaName: formData.villaName || "",
                 slug: formData.slug || "",
-                locationId: formData.locationId || "",
+                locationId: formData.locationId?._id || "",
                 villaImage: null,
                 villaGallery: [],
                 galleryPreview:
                     Array.isArray(formData?.images?.villaGallery) ? formData?.images?.villaGallery : [],
                 overview: formData.overview || "",
-                highlights: formData.highlights || [],
+                services: Array.isArray(formData.services)
+                    ? formData.services.map((s) => (typeof s === "object" ? s._id : s))
+                    : [],
+                isOffer: formData.isOffer || false,
                 bedrooms: formData?.bedrooms || {},
-                bathroom: formData?.bathroom || {},
+                bathrooms: formData?.bathrooms || {},
                 attributes: formData.attributes || [],
                 surrounding: formData.surrounding || [],
-                amenities: formData.amenities || [],
+                amenities: Array.isArray(formData.amenities)
+                    ? formData.amenities.map((a) => (typeof a === "object" ? a._id : a))
+                    : [],
                 offerPercentage: formData.offerPercentage || 0,
                 faq: formData.faq || [],
                 map: formData.map || null,
@@ -151,12 +156,13 @@ const CreateVilla = ({ formData, onBack }) => {
         fd.append("villaName", form.villaName);
         fd.append("slug", form.slug);
         fd.append("locationId", form.locationId);
+        fd.append("isOffer", form.isOffer);
         if (form.villaImage) fd.append("villaImage", form.villaImage);
         form.villaGallery.forEach((img) => fd.append("villaGallery", img));
         fd.append("overview", form.overview);
-        form.highlights.forEach((v) => fd.append("highlights[]", v));
+        form.services.forEach((v) => fd.append("services[]", v));
         fd.append("bedrooms", form.bedrooms);
-        fd.append("bathroom", form.bathroom);
+        fd.append("bathrooms", form.bathrooms);
         fd.append("offerPercentage", form.offerPercentage);
         form.attributes.forEach((v) => fd.append("attributes[]", v));
         form.surrounding.forEach((v) => fd.append("surrounding[]", v));
@@ -166,7 +172,6 @@ const CreateVilla = ({ formData, onBack }) => {
         fd.append("price", form.price);
         fd.append("maxGuests", form.maxGuests);
         fd.append("isFeatured", form.isFeatured);
-
         if (formData) {
             dispatch(updateVilla({ id: formData._id, payload: fd }));
         } else {
@@ -272,20 +277,20 @@ const CreateVilla = ({ formData, onBack }) => {
                         <MultiSelectDropdown
                             label="Select Services"
                             options={services}
-                            selected={form.highlights}
+                            selected={form.services}
                             onChange={(ids) =>
-                                setForm((prev) => ({ ...prev, highlights: ids }))
+                                setForm((prev) => ({ ...prev, services: ids }))
                             }
                             multiple={true}
                             searchable={true}
-                            labelKey="highlights"
+                            labelKey="services"
                             placeholder="Select Services"
                         />
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                     <InputField type="number" name="bedrooms" placeholder="Bedrooms" value={form.bedrooms} onChange={handleChange} />
-                    <InputField type="number" name="bathroom" placeholder="Enter Bath Count" value={form.bathroom} onChange={handleChange} />
+                    <InputField type="number" name="bathrooms" placeholder="Enter Bath Count" value={form.bathrooms} onChange={handleChange} />
                 </div>
                 <div className="border-dashed border-2 p-4 rounded-lg text-center">
                     <input type="file" accept="image/*" className="hidden" id="villa-cover" onChange={handleSingleImage} />

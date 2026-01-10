@@ -57,17 +57,25 @@ const BlockedDatesSection = () => {
         }
     };
 
-    const getLocationName = (locationId) => {
-        if (!locationId) return "All Locations";
-        const location = locations.find(loc => loc._id === locationId);
-        return location?.locationName || `Location ${locationId}`;
+    const getLocationName = (location) => {
+        if (!location) return "All Locations";
+        if (typeof location === "object") {
+            return location.locationName || "Unknown Location";
+        }
+        const found = locations.find(loc => loc._id === location);
+        return found?.locationName || "Unknown Location";
     };
 
-    const getVillaName = (villaId) => {
-        if (!villaId) return "All Villas";
-        const villa = villas.find(v => v._id === villaId);
-        return villa?.villaName || `Villa ${villaId}`;
+
+    const getVillaName = (villa) => {
+        if (!villa) return "All Villas";
+        if (typeof villa === "object") {
+            return villa.villaName || "Unknown Villa";
+        }
+        const found = villas.find(v => v._id === villa);
+        return found?.villaName || "Unknown Villa";
     };
+
 
     const formatDateRange = (startDate, endDate) => {
         if (!startDate) return "N/A";
