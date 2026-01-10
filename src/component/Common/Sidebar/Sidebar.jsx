@@ -99,7 +99,7 @@ const Sidebar = () => {
                                 },
                                 {
                                     to: "/blocked-dates",
-                                    label: "Blocked/Highlights",
+                                    label: "Blocked Dates/Highlights",
                                     icon: <LucideCalendarX />,
                                 },
                                 {

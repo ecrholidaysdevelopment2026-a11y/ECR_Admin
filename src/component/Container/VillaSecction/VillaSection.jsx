@@ -16,7 +16,7 @@ import {
 import { SimpleNoVillas } from "../../../common/Animation";
 import CreateVilla from "./CreateVilla";
 import { useNavigate } from "react-router-dom";
-import stripHtml from "../../../store/slice/stripHtml";
+import stripHtml from "../../../utils/stripHtml";
 
 const VillaSection = () => {
     const navigate = useNavigate()
