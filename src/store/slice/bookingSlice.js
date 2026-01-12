@@ -302,7 +302,7 @@ const bookingSlice = createSlice({
       })
       .addCase(getDailyBookingSummary.fulfilled, (state, action) => {
         state.loading = false;
-        state.dailySummary = action.payload?.checkIn;
+        state.dailySummary = action.payload;
       })
       .addCase(getDailyBookingSummary.rejected, (state, action) => {
         state.loading = false;

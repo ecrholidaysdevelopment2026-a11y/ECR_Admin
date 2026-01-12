@@ -1,7 +1,7 @@
 import MainLayout from "../../../common/MainLayout";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FiEdit, FiTrash2, FiEye, FiCalendar, FiHome, FiDollarSign } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiEye, FiCalendar, FiHome, FiDollarSign, FiMoreVertical } from "react-icons/fi";
 import { Package } from "lucide-react";
 import ConfirmDeleteModal from "../../../common/CommonDeleteModel";
 import {
@@ -277,7 +277,7 @@ const BookingSection = () => {
                                                 Location Name
                                             </th>
                                             <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                                Villa & Dates
+                                                Chekin - CheckOut
                                             </th>
                                             <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                                 Amount & Payment
@@ -318,7 +318,7 @@ const BookingSection = () => {
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <div>
-                                                            <div className="text-sm font-semibold text-blue-600">
+                                                            <div className="text-sm  text-blue-600">
                                                                 {booking.bookingId}
                                                             </div>
                                                         </div>
@@ -326,7 +326,6 @@ const BookingSection = () => {
 
                                                     <td>
                                                         <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
-                                                            <FiHome size={24} />
                                                             {booking.villaId?.villaName || "N/A"}
                                                         </div>
                                                     </td>
@@ -344,7 +343,6 @@ const BookingSection = () => {
                                                     <td className="px-6 py-4">
                                                         <div className="space-y-2">
                                                             <div className="flex items-center gap-2 text-lg font-bold text-gray-900">
-                                                                <FiDollarSign size={16} />
                                                                 ₹{booking.totalAmount?.toLocaleString()}
                                                             </div>
                                                             <div className="mt-1">
@@ -363,36 +361,43 @@ const BookingSection = () => {
                                                             )}
                                                         </div>
                                                     </td>
-                                                    <td className="px-6 py-4">
-                                                        <div className="flex flex-col gap-2">
+                                                    <td className="px-6 py-4 relative group">
+                                                        <button className="p-2 rounded hover:bg-gray-200">
+                                                            <FiMoreVertical size={16} />
+                                                        </button>
+                                                        <div className="
+        absolute right-6 top-10 z-20
+        border border-gray-200
+        hidden group-hover:block
+        w-32 bg-white  rounded-lg shadow-lg
+    ">
                                                             <button
                                                                 onClick={() => {
                                                                     setViewData(booking);
                                                                     setShowView(true);
                                                                 }}
-                                                                className="flex items-center justify-center gap-1 px-3 py-2 text-xs text-white bg-green-500 rounded hover:bg-green-600"
-                                                                title="View Details"
+                                                                className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100"
                                                             >
                                                                 <FiEye size={14} /> View
                                                             </button>
+
                                                             <button
                                                                 onClick={() => {
                                                                     setEditData(booking);
                                                                     setShowCreate(true);
                                                                 }}
-                                                                className="flex items-center justify-center gap-1 px-3 py-2 text-xs text-white bg-blue-500 rounded hover:bg-blue-600"
-                                                                title="Edit Booking"
+                                                                className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100"
                                                             >
                                                                 <FiEdit size={14} /> Edit
                                                             </button>
+
                                                             {booking.bookingStatus === "PENDING" && (
                                                                 <button
                                                                     onClick={() => {
                                                                         setDeleteId(booking?.bookingId);
                                                                         setOpenDelete(true);
                                                                     }}
-                                                                    className="flex items-center justify-center gap-1 px-3 py-2 text-xs text-white bg-red-500 rounded hover:bg-red-600"
-                                                                    title="Cancel Booking"
+                                                                    className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50"
                                                                 >
                                                                     <FiTrash2 size={14} /> Cancel
                                                                 </button>

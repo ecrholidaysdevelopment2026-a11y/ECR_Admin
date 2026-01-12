@@ -53,7 +53,7 @@ const SelectedCalendar = ({ onDateSelect }) => {
 
     return (
         <div className="w-full max-w-md">
-            <div className="mb-4 flex justify-between items-center">
+            <div className="mb-6 flex justify-between items-center">
                 <button
                     onClick={handlePrevMonth}
                     className="p-2 hover:bg-gray-100 rounded-full"
@@ -65,7 +65,6 @@ const SelectedCalendar = ({ onDateSelect }) => {
                     {monthNames[currentMonth.getMonth()]}{" "}
                     {currentMonth.getFullYear()}
                 </h3>
-
                 <button
                     onClick={handleNextMonth}
                     className="p-2 hover:bg-gray-100 rounded-full"
@@ -73,7 +72,7 @@ const SelectedCalendar = ({ onDateSelect }) => {
                     <FiChevronRight />
                 </button>
             </div>
-            <div className="grid grid-cols-7 gap-1 mb-2">
+            <div className="grid grid-cols-7 gap-2 mb-2">
                 {dayNames.map(d => (
                     <div
                         key={d}
@@ -103,7 +102,7 @@ const SelectedCalendar = ({ onDateSelect }) => {
                                 onDateSelect?.(date);
                             }}
                             className={`
-                h-8 md:h-8 flex items-center justify-center
+                h-8 md:h-13 flex items-center justify-center
                 text-xs md:text-sm rounded-full cursor-pointer
                 transition-colors duration-200
                 ${!date ? "invisible" : ""}

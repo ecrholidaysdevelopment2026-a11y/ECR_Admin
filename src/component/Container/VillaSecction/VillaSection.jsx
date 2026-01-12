@@ -191,9 +191,20 @@ const VillaSection = () => {
                                                 }`}>
                                                 {villa?.status ? "Active" : "Inactive"}
                                             </span>
-                                            <span className="text-sm">
-                                                ₹{villa?.offerPrice || villa?.price}/night
-                                            </span>
+                                            {villa?.isOffer && Number(villa.offerPrice) < Number(villa.price) ? (
+                                                <div>
+                                                    <span className="text-red-600 font-semibold">
+                                                        ₹{villa.offerPrice}
+                                                    </span>
+                                                    <span className="line-through text-xs ml-2 text-gray-500">
+                                                        ₹{villa.price}
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <span className="font-semibold">
+                                                    ₹{villa.price}
+                                                </span>
+                                            )}
                                         </div>
                                         {villa?.isFeatured && (
                                             <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded">
@@ -262,17 +273,19 @@ const VillaSection = () => {
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="text-sm">
-                                                {villa?.isOffer ? (
+                                                {villa?.isOffer && Number(villa.offerPrice) < Number(villa.price) ? (
                                                     <div>
                                                         <span className="text-red-600 font-semibold">
                                                             ₹{villa.offerPrice}
                                                         </span>
-                                                        <span className="line-through text-xs ml-2">
+                                                        <span className="line-through text-xs ml-2 text-gray-500">
                                                             ₹{villa.price}
                                                         </span>
                                                     </div>
                                                 ) : (
-                                                    <span className="font-semibold">₹{villa.price}</span>
+                                                    <span className="font-semibold">
+                                                        ₹{villa.price}
+                                                    </span>
                                                 )}
                                                 <div className="text-xs text-gray-500">per night</div>
                                             </div>

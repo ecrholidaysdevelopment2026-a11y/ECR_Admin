@@ -25,6 +25,7 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
         endDate: blockedDateData?.endDate ? new Date(blockedDateData.endDate) : null,
         reason: blockedDateData?.reason || "",
         color: blockedDateData?.color || "#EF4444",
+        isBlocked: blockedDateData?.isBlocked || false,
     });
 
     const [filteredVillas, setFilteredVillas] = useState([]);
@@ -36,7 +37,7 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
     useEffect(() => {
         if (formData.scope === 3 && formData.locationId && villas.length > 0) {
             const filtered = villas.filter(villa =>
-                villa.locationId === formData.locationId ||
+                villa.locationId?._id === formData.locationId ||
                 villa.location?._id === formData.locationId ||
                 villa.location === formData.locationId
             );
@@ -82,9 +83,10 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
         const formattedData = {
             scope: formData.scope,
             startDate: formData.startDate ? formData.startDate.toISOString().split('T')[0] : null,
-            endDate: blockType === "range" && formData.endDate ? formData.endDate.toISOString().split('T')[0] : null,
+            endDate: blockType === "range" && formData.endDate ? formData.endDate.toISOString().split('T')[0] : formData.startDate.toISOString().split('T')[0],
             reason: formData.reason,
             color: formData.color,
+            isBlocked: formData.isBlocked,
         };
 
         if (formData.scope === 2 || formData.scope === 3) {
@@ -165,6 +167,18 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-6">
+                        <div className="mb-6">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Reason / Notes
+                            </label>
+                            <input
+                                value={formData.reason}
+                                onChange={(e) => handleChange("reason", e.target.value)}
+                                placeholder="Enter reason for blocking dates (e.g. maintenance, renovation, private booking...)"
+                                className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-0 focus:border-gray-400"
+                                required
+                            />
+                        </div>
                         <label className="block text-sm font-medium text-gray-700 mb-3">
                             Block Scope
                         </label>
@@ -306,19 +320,16 @@ const CreateBlockedDate = ({ blockedDateData, onBack }) => {
                             </span>
                         </div>
                     </div>
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Reason / Notes
-                        </label>
-                        <textarea
-                            value={formData.reason}
-                            onChange={(e) => handleChange("reason", e.target.value)}
-                            placeholder="Enter reason for blocking dates (e.g. maintenance, renovation, private booking...)"
-                            rows={4}
-                            className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-0 focus:border-gray-400"
-                            required
+                    <label className="flex items-center justify-end gap-2 h-[42px]">
+                        <input
+                            type="checkbox"
+                            checked={formData.isBlocked}
+                            onChange={(e) => handleChange("isBlocked", e.target.checked)}
+                            className="mt-0"
                         />
-                    </div>
+                        <span className="text-sm">Is Booked?</span>
+                    </label>
+
                     <div className="flex gap-4">
                         <button
                             type="button"

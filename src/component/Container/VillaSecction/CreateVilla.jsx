@@ -343,14 +343,34 @@ const CreateVilla = ({ formData, onBack }) => {
                         ))}
                     </div>
                 )}
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 items-center ">
-                    <InputField type="number" name="price" placeholder="Price" value={form.price} onChange={handleChange} />
-                    <div className="flex gap-2">
-                        <input type="checkbox" checked={form.isOffer} onChange={() => handleToggle("isOffer")} />
-                        <span>Is Offer?</span>
-                    </div>
-                    <div>
-                        {form.isOffer && <InputField type="number" name="offerPercentage" placeholder="Offer Percentage" value={form.offerPercentage} onChange={handleChange} className="w-full" />}
+                <label className="flex items-center justify-end gap-2 h-[42px]">
+                    <input
+                        type="checkbox"
+                        checked={form.isOffer}
+                        onChange={() => handleToggle("isOffer")}
+                        className="mt-0"
+                    />
+                    <span className="text-sm">Is Offer?</span>
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2  gap-3 items-end">
+                    <InputField
+                        type="number"
+                        name="price"
+                        placeholder="Price"
+                        value={form.price}
+                        onChange={handleChange}
+                    />
+                    <div className="min-h-[42px]">
+                        {form.isOffer && (
+                            <InputField
+                                type="number"
+                                name="offerPercentage"
+                                placeholder="Offer Percentage"
+                                value={form.offerPercentage}
+                                onChange={handleChange}
+                                className="w-full"
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
