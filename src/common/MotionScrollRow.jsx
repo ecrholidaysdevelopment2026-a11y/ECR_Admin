@@ -1,51 +1,50 @@
 import { motion, useAnimation } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "./Image";
 
 export const MotionScrollRow = ({
     data,
-    speed = 100,
+    speed = 60,
     direction = "left",
 }) => {
+    const controls = useAnimation();
+    const rowRef = useRef(null);
+
+    useEffect(() => {
+        if (!rowRef.current || !data?.length) return;
+
+        const contentWidth = rowRef.current.scrollWidth / 2;
+        const duration = contentWidth / speed;
+        const fromX = direction === "left" ? 0 : -contentWidth;
+        const toX = direction === "left" ? -contentWidth : 0;
+
+        controls.set({ x: fromX });
+
+        controls.start({
+            x: toX,
+            transition: {
+                duration,
+                ease: "linear",
+                repeat: Infinity,
+                repeatType: "loop",
+            },
+        });
+    }, [controls, data, speed, direction]);
+
     if (!data?.length) {
         return <p className="text-gray-400">No data available</p>;
     }
 
-    const controls = useAnimation();
-    const fromX = direction === "left" ? "0%" : "-50%";
-    const toX = direction === "left" ? "-50%" : "0%";
-
     return (
-        <div className="overflow-hidden w-full pb-3 ">
+        <div className="overflow-hidden w-full pb-3">
             <motion.div
+                ref={rowRef}
                 className="flex gap-4 w-max"
                 animate={controls}
-                initial={{ x: fromX }}
-                onHoverStart={() => {
-                    controls.stop();
-                }}
-                onHoverEnd={() => {
-                    controls.start({
-                        x: [fromX, toX],
-                        transition: {
-                            ease: "linear",
-                            duration: speed,
-                            repeat: Infinity,
-                        },
-                    });
-                }}
-                onViewportEnter={() => {
-                    controls.start({
-                        x: [fromX, toX],
-                        transition: {
-                            ease: "linear",
-                            duration: speed,
-                            repeat: Infinity,
-                        },
-                    });
-                }}
+                onHoverStart={() => controls.stop()}
+                onHoverEnd={() => controls.start()}
             >
-                {data?.map((item, index) => (
+                {[...data, ...data].map((item, index) => (
                     <div
                         key={`${item._id}-${index}`}
                         className="min-w-[360px] flex items-center gap-3 px-3 py-2 bg-white rounded-lg shadow-md shrink-0"
@@ -68,7 +67,6 @@ export const MotionScrollRow = ({
                                     ? new Date(item.checkInDate).toDateString()
                                     : "—"}
                             </p>
-
                             <p className="text-xs text-gray-700">
                                 Check-out:{" "}
                                 {item.checkOutDate

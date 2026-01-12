@@ -178,21 +178,21 @@ const Dashboard = () => {
                         <MotionScrollRow
                             data={checkIn}
                             type="checkin"
-                            speed={35}
+                            speed={30}
                         />
                         <h3 className="text-sm font-semibold px-1">Checked Out Today</h3>
                         <MotionScrollRow
                             direction="right"
                             data={checkOut}
                             type="checkin"
-                            speed={35}
+                            speed={30}
                         />
                         <h3 className="text-sm font-semibold px-1">Booking</h3>
                         <MotionScrollRow
                             direction="left"
                             data={totalBookings}
                             type="checkin"
-                            speed={35}
+                            speed={30}
                         />
                     </div>
 
