@@ -135,7 +135,7 @@ const Header = () => {
                     />
                 </div>
             </div>
-            <div className="flex items-center gap-4 relative">
+            <div className="flex items-center gap-4 relative cursor-pointer">
                 <button
                     onClick={() => setDarkMode((p) => !p)}
                     className="p-2 rounded-full"
@@ -148,9 +148,11 @@ const Header = () => {
                     className="relative"
                     onMouseEnter={handleOpenNotifications}
                     onMouseLeave={() => setOpenNotifications(false)}
+                    onClick={() => setOpenNotifications((p) => !p)}
+
                 >
                     <button
-                        className="relative p-2 rounded-full"
+                        className="relative p-2 rounded-full cursor-pointer"
                         style={{ background: "var(--card-bg)" }}
                     >
                         <FiBell size={22} />
