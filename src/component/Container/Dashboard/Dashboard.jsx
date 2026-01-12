@@ -61,7 +61,7 @@ const Dashboard = () => {
 
     const checkIn = dailySummary?.checkIn || null;
     const checkOut = dailySummary?.checkOut || null;
-    const totalBookings = dailySummary?.totalBookings || null;
+    const totalBookings = dailySummary?.total || null;
 
 
     useEffect(() => {

@@ -30,7 +30,7 @@ const VillaSection = () => {
     const [openDelete, setOpenDelete] = useState(false);
     const [showCreate, setShowCreate] = useState(false);
     const [editData, setEditData] = useState(null);
-    const [viewMode, setViewMode] = useState("list");
+    const [viewMode, setViewMode] = useState("grid");
 
     useEffect(() => {
         dispatch(getAllVillas());

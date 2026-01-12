@@ -14,6 +14,20 @@ const provider = new OpenStreetMapProvider({
     fetch: window.fetch,
 });
 
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl:
+        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+    iconUrl:
+        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+    shadowUrl:
+        "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
+
+
 const MapController = ({ mapRef }) => {
     const map = useMap();
     useEffect(() => {
@@ -26,6 +40,18 @@ const MapPicker = ({ onSelect, initialPosition = null, isInput = true }) => {
     const [position, setPosition] = useState(initialPosition);
     const [query, setQuery] = useState("");
     const mapRef = useRef(null);
+
+    const providerRef = useRef(null);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            providerRef.current = new OpenStreetMapProvider({
+                params: { countrycodes: "in" },
+                fetch: window.fetch,
+            });
+        }
+    }, []);
+
 
     useEffect(() => {
         if (initialPosition && mapRef.current) {

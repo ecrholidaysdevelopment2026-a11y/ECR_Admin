@@ -45,14 +45,14 @@ const CreateAmenity = ({ amenityData, onBack }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "name") {
-            setForm((p) => ({
-                ...p,
-                name: value,
-                key: generateSlug(value),
-            }));
-        }
+
+        setForm((prev) => ({
+            ...prev,
+            [name]: value,
+            ...(name === "name" ? { key: generateSlug(value) } : {}),
+        }));
     };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -125,8 +125,8 @@ const CreateAmenity = ({ amenityData, onBack }) => {
                                 setForm((p) => ({
                                     ...p,
                                     icon: key,
-                                    name: p.name || label,
-                                    key: p.key || generateSlug(label),
+                                    name: label,
+                                    key: generateSlug(label),
                                 }))
                             }
                             className={`p-2 flex flex-col items-center rounded-lg border

@@ -14,17 +14,22 @@ import {
 
 import { successAlert, errorAlert, warningAlert } from "../../../utils/alertService";
 import { generateSlug } from "../../../utils/generateSlug";
+import { SERVICE_ICON_LIST } from "../../../utils/serviceIconList";
+import { getServiceIcon } from "../../../utils/serviceIcons";
 
 const CreateService = ({ serviceData, onBack }) => {
     const dispatch = useDispatch();
     const { loading, message, error } = useSelector((state) => state.service);
+    const [iconSearch, setIconSearch] = useState("");
 
     const [form, setForm] = useState({
+        icon: "",
         name: "",
         code: "",
         price: "",
         description: "",
         status: true,
+        hasPrice: true,
     });
 
     useEffect(() => {
@@ -33,6 +38,8 @@ const CreateService = ({ serviceData, onBack }) => {
                 name: serviceData?.name || "",
                 code: serviceData?.code || "",
                 price: serviceData?.price || "",
+                icon: serviceData?.icon || "",
+                hasPrice: serviceData?.price > 0,
                 description: serviceData?.description || "",
                 status: serviceData?.status !== undefined ? serviceData?.status === 1 : true,
             });
@@ -43,6 +50,7 @@ const CreateService = ({ serviceData, onBack }) => {
 
     const resetForm = () => {
         setForm({
+            icon: "",
             name: "",
             code: "",
             price: "",
@@ -73,14 +81,14 @@ const CreateService = ({ serviceData, onBack }) => {
         e.preventDefault();
         if (!form.name.trim()) return warningAlert("Service name is required");
         if (!form.code.trim()) return warningAlert("Service code is required");
-        if (!form.price || isNaN(form.price)) return warningAlert("Valid price is required");
 
         const payload = {
             name: form.name,
             code: form.code,
             description: form.description,
-            price: Number(form.price),
+            price: form.hasPrice && Number(form.price)  ,
             status: form.status ? 1 : 0,
+            icon: form.icon,
         };
 
         if (serviceData) {
@@ -102,6 +110,8 @@ const CreateService = ({ serviceData, onBack }) => {
             dispatch(clearExtraServiceError());
         }
     }, [message, error, dispatch, onBack]);
+
+    const PreviewIcon = form.icon ? getServiceIcon(form.icon) : null;
 
     return (
         <div className="px-6  mx-auto"
@@ -133,14 +143,67 @@ const CreateService = ({ serviceData, onBack }) => {
                     value={form.name}
                     onChange={handleChange}
                 />
-                <InputField
-                    name="price"
-                    type="number"
-                    placeholder="Price"
-                    value={form.price}
-                    onChange={handleChange}
-                />
-
+                <div className="flex items-center gap-3">
+                    <span className=" text-gray-600">Paid Service:</span>
+                    <div
+                        onClick={() =>
+                            setForm((p) => ({
+                                ...p,
+                                hasPrice: !p.hasPrice,
+                                price: !p.hasPrice ? p.price : "",
+                            }))
+                        }
+                        className={`w-14 h-7 p-1 rounded-full cursor-pointer 
+        ${form.hasPrice ? "bg-green-500" : "bg-gray-400"}`}
+                    >
+                        <div
+                            className={`bg-white w-5 h-5 rounded-full transition-transform
+            ${form.hasPrice ? "translate-x-7" : "translate-x-0"}`}
+                        />
+                    </div>
+                    <span>{form.hasPrice ? "Paid" : "Free"}</span>
+                </div>
+                {form.hasPrice && (
+                    <InputField
+                        name="price"
+                        type="number"
+                        placeholder="Price"
+                        value={form.price}
+                        onChange={handleChange}
+                    />
+                )}
+                <div className="grid grid-cols-6 gap-3 max-h-48 overflow-y-auto border p-3 rounded-lg">
+                    {SERVICE_ICON_LIST.filter((i) =>
+                        i.label.toLowerCase().includes(iconSearch.toLowerCase())
+                    ).map(({ key, Icon, label }) => (
+                        <button
+                            key={key}
+                            type="button"
+                            onClick={() =>
+                                setForm((p) => ({
+                                    ...p,
+                                    icon: key,
+                                    name: label,
+                                    code: generateSlug(label),
+                                }))
+                            }
+                            className={`p-2 flex flex-col items-center rounded-lg border
+                ${form.icon === key
+                                    ? "bg-blue-100 border-blue-500"
+                                    : "hover:bg-gray-100"
+                                }`}
+                        >
+                            <Icon size={22} />
+                            <span className="text-[10px]">{label}</span>
+                        </button>
+                    ))}
+                </div>
+                {PreviewIcon && (
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-500">Preview:</span>
+                        <PreviewIcon size={22} />
+                    </div>
+                )}
                 <textarea
                     name="description"
                     rows={4}
