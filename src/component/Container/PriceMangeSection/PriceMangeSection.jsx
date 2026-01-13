@@ -101,7 +101,7 @@ const PriceManageSection = () => {
                 ) : weeklyPrice.length > 0 ? (
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-sm">
-                            <thead className="bg-gray-100 border-b">
+                            <thead className="bg-gray-100">
                                 <tr>
                                     <th className="py-3 px-6 text-left font-semibold text-gray-600">
                                         Date

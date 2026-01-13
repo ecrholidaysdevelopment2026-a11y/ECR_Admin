@@ -209,7 +209,7 @@ const Header = () => {
                                                     {item.type === "USER_REGISTRATION" && (
                                                         <>
                                                             <p className="text-xs text-gray-500">
-                                                                {item.userName}  {item.userEmail}
+                                                                {item.userEmail}
                                                             </p>
                                                             <p>
                                                                 / {formatDate(item.createdAt)}
