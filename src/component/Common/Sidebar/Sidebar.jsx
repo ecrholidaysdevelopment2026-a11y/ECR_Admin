@@ -7,6 +7,7 @@ import {
 } from "react-icons/ai";
 import {
     MdCategory,
+    MdOutlinePriceChange,
     MdOutlineProductionQuantityLimits,
     MdSupportAgent,
 } from "react-icons/md";
@@ -99,6 +100,7 @@ const Sidebar = () => {
                                     label: "Amenities",
                                     icon: <LuSofa />,
                                 },
+
                                 {
                                     to: "/blocked-dates",
                                     label: "Calendar",
@@ -131,10 +133,11 @@ const Sidebar = () => {
                         </div>
                     )}
                     {[
-                        { to: "/profile", label: "Profile", icon: <AiOutlineSetting /> },
+                        { to: "/pricing", label: "Pricing Management", icon: <MdOutlinePriceChange /> },
                         { to: "/booking", label: "Booking", icon: <MdOutlineProductionQuantityLimits /> },
                         { to: "/category", label: "Category", icon: <MdCategory /> },
                         { to: "/event", label: "Event", icon: <FaGift /> },
+                        { to: "/profile", label: "Profile", icon: <AiOutlineSetting /> },
                         { to: "/users", label: "Users", icon: <FaUserCheck /> },
                         { to: "/enquiries", label: "Enquiries", icon: <MdSupportAgent /> },
                     ].map(({ to, label, icon }) => (

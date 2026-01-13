@@ -121,7 +121,7 @@ const LeadSection = () => {
                                             <td className="px-6 py-4 space-y-1 text-sm">
                                                 {lead.location && (
                                                     <div className="flex items-center gap-2">
-                                                        <MapPin size={14} /> {lead.location}
+                                                        <MapPin size={14} /> {lead?.location?.locationName}
                                                     </div>
                                                 )}
                                                 {lead.rooms && (

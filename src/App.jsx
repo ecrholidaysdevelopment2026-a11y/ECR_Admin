@@ -20,6 +20,7 @@ import BlockedDates from "./pages/BlockedDates/BlockedDates";
 import Lead from "./pages/Lead/Lead";
 import Event from "./pages/Event/Event";
 import Category from "./pages/Category/Category";
+import PriceMange from "../src/pages/PriceMange/PriceMange";
 
 function App() {
   useAdminNotifications()
@@ -50,6 +51,7 @@ function App() {
         <Route path="/enquiries" element={<Lead />} />
         <Route path="/event" element={<Event />} />
         <Route path="/category" element={<Category />} />
+        <Route path="/pricing" element={<PriceMange />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

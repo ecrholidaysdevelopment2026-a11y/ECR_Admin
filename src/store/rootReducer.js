@@ -13,6 +13,7 @@ import blockedDatesReducer from "./slice/blockedDatesSlice";
 import leadsReducer from "./slice/leadSlice";
 import eventReducer from "./slice/eventSlice";
 import categoryReducer from "./slice/categorySlice";
+import villaPriceReducer from "./slice/villaPriceSlice";
 
 const reducer = combineReducers({
   user: userReducer,
@@ -29,5 +30,6 @@ const reducer = combineReducers({
   lead: leadsReducer,
   event: eventReducer,
   category: categoryReducer,
+  villaPrice: villaPriceReducer,
 });
 export default reducer;

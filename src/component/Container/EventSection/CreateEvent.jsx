@@ -33,7 +33,7 @@ const CreateEvent = ({ formData, onBack }) => {
     } = useSelector((state) => state.category);
 
     const [form, setForm] = useState({
-        eventName: "",
+        title: "",
         eventImages: [],
         categoryId: null
     });
@@ -46,7 +46,7 @@ const CreateEvent = ({ formData, onBack }) => {
         if (!formData) return;
 
         setForm({
-            eventName: formData.title || "",
+            title: formData.title || "",
             eventImages: [],
             categoryId: formData.categoryId._id
         });
@@ -63,10 +63,10 @@ const CreateEvent = ({ formData, onBack }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        if (name === "eventName") {
+        if (name === "title") {
             setForm((p) => ({
                 ...p,
-                eventName: value,
+                title: value,
                 slug: generateSlug(value),
             }));
         } else {
@@ -103,11 +103,11 @@ const CreateEvent = ({ formData, onBack }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!form.eventName.trim()) {
+        if (!form.title.trim()) {
             return warningAlert("Event name required");
         }
         const fd = new FormData();
-        fd.append("eventName", form.eventName);
+        fd.append("title", form.title);
         fd.append("categoryId", form.categoryId);
 
         form.eventImages.forEach((img) => {
@@ -148,9 +148,9 @@ const CreateEvent = ({ formData, onBack }) => {
 
             <form onSubmit={handleSubmit} className="p-6 shadow rounded-xl space-y-4">
                 <InputField
-                    name="eventName"
+                    name="title"
                     placeholder="Event Name"
-                    value={form.eventName}
+                    value={form.title}
                     onChange={handleChange}
                 />
                 <SingleSelectDropdown
