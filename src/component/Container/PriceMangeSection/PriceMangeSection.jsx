@@ -24,32 +24,26 @@ const PriceManageSection = () => {
         (state) => state.villaPrice
     );
 
-    /* 🔹 Fetch villas */
     useEffect(() => {
         dispatch(getAllVillas());
     }, [dispatch]);
 
-    /* 🔹 Auto-select first villa */
     useEffect(() => {
         if (villas.length > 0 && !selectedVillaId) {
             setSelectedVillaId(villas[0]._id);
         }
     }, [villas, selectedVillaId]);
 
-    /* 🔹 Selected villa slug */
     const selectedVilla = villas.find(
         (villa) => villa._id === selectedVillaId
     );
-    const villaSlug = selectedVilla?.slug;
 
-    /* 🔹 Fetch weekly prices */
     useEffect(() => {
-        if (villaSlug) {
-            dispatch(getVillaWeeklyPrice(villaSlug));
+        if (selectedVillaId) {
+            dispatch(getVillaWeeklyPrice(selectedVillaId));
         }
-    }, [dispatch, villaSlug]);
+    }, [dispatch, selectedVillaId]);
 
-    /* 🔹 Error handling */
     useEffect(() => {
         if (error) {
             errorAlert(error);
@@ -57,7 +51,6 @@ const PriceManageSection = () => {
         }
     }, [error, dispatch]);
 
-    /* 🔹 Create price page */
     if (showCreate) {
         return (
             <CreateVillaPrice
@@ -75,50 +68,59 @@ const PriceManageSection = () => {
             Inputvalue={search}
             InputOnChange={setSearch}
         >
-            {/* 🔹 Villa Dropdown */}
-            <div className="max-w-sm mt-6">
-                <SingleSelectDropdown
-                    label="Select Villa"
-                    options={villas}
-                    value={selectedVillaId}
-                    onChange={(id) => {
-                        setSelectedVillaId(id);
-                        setShowCreate(false);
-                    }}
-                    searchable
-                    labelKey="villaName"
-                    placeholder="Choose a villa"
-                />
-            </div>
+            <div className="flex flex-wrap items-end justify-between gap-4 mt-6 mb-4">
+                <div className="w-full sm:w-72">
+                    <SingleSelectDropdown
+                        label="Villa"
+                        options={villas}
+                        value={selectedVillaId}
+                        onChange={(id) => {
+                            setSelectedVillaId(id);
+                            setShowCreate(false);
+                        }}
+                        searchable
+                        labelKey="villaName"
+                        placeholder="Choose a villa"
+                    />
+                </div>
 
-            <section className="my-5">
+                {selectedVilla && (
+                    <div className="text-sm text-gray-500">
+                        Showing prices for{" "}
+                        <span className="font-medium text-gray-700">
+                            {selectedVilla.villaName}
+                        </span>
+                    </div>
+                )}
+            </div>
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
                 {!selectedVillaId ? (
-                    <p className="text-center text-gray-500 mt-10">
+                    <p className="text-center text-gray-500 py-12">
                         Please select a villa to view pricing
                     </p>
                 ) : weeklyPrice.length > 0 ? (
                     <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white border border-gray-300 rounded-md text-sm">
-                            <thead>
-                                <tr className="bg-gray-50">
-                                    <th className="py-2 px-4 text-left font-medium text-gray-600">
+                        <table className="min-w-full text-sm">
+                            <thead className="bg-gray-100 border-b">
+                                <tr>
+                                    <th className="py-3 px-6 text-left font-semibold text-gray-600">
                                         Date
                                     </th>
-                                    <th className="py-2 px-4 text-left font-medium text-gray-600">
+                                    <th className="py-3 px-6 text-left font-semibold text-gray-600">
                                         Price
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {weeklyPrice.map((item, i) => (
+                                {weeklyPrice?.map((item, i) => (
                                     <tr
                                         key={i}
-                                        className="border-t border-gray-200 hover:bg-gray-50"
+                                        className="border-b border-gray-300 hover:bg-gray-50"
                                     >
-                                        <td className="py-2 px-4 text-gray-700">
+                                        <td className="py-3 px-6 text-gray-700">
                                             {item.date}
                                         </td>
-                                        <td className="py-2 px-4 text-gray-700">
+                                        <td className="py-3 px-6 text-gray-700">
                                             ₹{item.price}
                                         </td>
                                     </tr>
@@ -127,11 +129,11 @@ const PriceManageSection = () => {
                         </table>
                     </div>
                 ) : (
-                    <p className="text-center text-gray-500 mt-10">
+                    <p className="text-center text-gray-500 py-12">
                         No pricing found for this villa
                     </p>
                 )}
-            </section>
+            </div>
         </MainLayout>
     );
 };
