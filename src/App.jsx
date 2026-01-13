@@ -17,6 +17,7 @@ import Booking from "./pages/Booking/Booking";
 import Promo from "./pages/Promo/Promo";
 import { useAdminNotifications } from "./hooks/useAdminNotifications";
 import BlockedDates from "./pages/BlockedDates/BlockedDates";
+import Lead from "./pages/Lead/Lead";
 
 function App() {
   useAdminNotifications()
@@ -44,6 +45,7 @@ function App() {
         <Route path="/amenities" element={<Amenities />} />
         <Route path="/promo" element={<Promo />} />
         <Route path="/blocked-dates" element={<BlockedDates />} />
+        <Route path="/enquiries" element={<Lead />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

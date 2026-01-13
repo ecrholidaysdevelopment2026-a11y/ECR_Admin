@@ -10,6 +10,8 @@ import promoReducer from "./slice/promoSlice";
 import notificationReducer from "./slice/notificationSlice";
 import dashboardReducer from "./slice/dashboardSlice";
 import blockedDatesReducer from "./slice/blockedDatesSlice";
+import leadsReducer from "./slice/leadSlice";
+import Lead from "../pages/Lead/Lead";
 
 const reducer = combineReducers({
   user: userReducer,
@@ -23,5 +25,6 @@ const reducer = combineReducers({
   notifications: notificationReducer,
   dashboard: dashboardReducer,
   blockedDates: blockedDatesReducer,
+  lead: leadsReducer,
 });
 export default reducer;

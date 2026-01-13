@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import MainLayout from "../../../common/MainLayout";
 import { FiEdit, FiTrash2, FiGrid, FiList } from "react-icons/fi";
 import { HiDotsVertical } from "react-icons/hi";
-import { TbView360 } from "react-icons/tb";
 import ConfirmDeleteModal from "../../../common/CommonDeleteModel";
 import Image from "../../../common/Image";
 import { errorAlert, successAlert } from "../../../utils/alertService";
@@ -114,13 +113,16 @@ const VillaSection = () => {
                         {filteredVillas?.map((villa) => (
                             <div
                                 key={villa?._id}
-                                className=" rounded-xl shadow-md border border-gray-200 p-6 relative group hover:shadow-lg transition-shadow duration-300"
-                            >
+                                className="rounded-xl shadow-md border border-gray-200 p-6 relative group overflow-visible hover:shadow-lg transition-shadow duration-300">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <h2 className="text-lg font-semibold  capitalize">
+                                        <h2
+                                            title={villa?.villaName}
+                                            className="text-lg font-semibold capitalize line-clamp-1"
+                                        >
                                             {villa?.villaName}
                                         </h2>
+
                                         <p className=" text-md mt-1">
                                             {villa?.locationId?.locationName || "Location not specified"}
                                         </p>

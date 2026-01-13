@@ -1,6 +1,7 @@
 import { motion, useAnimation } from "framer-motion";
 import { useEffect, useRef } from "react";
 import Image from "./Image";
+import { FiCalendar, FiLogIn, FiLogOut } from "react-icons/fi";
 
 export const MotionScrollRow = ({
     data,
@@ -44,7 +45,7 @@ export const MotionScrollRow = ({
                 onHoverStart={() => controls.stop()}
                 onHoverEnd={() => controls.start()}
             >
-                {[...data, ...data].map((item, index) => (
+                {data?.map((item, index) => (
                     <div
                         key={`${item._id}-${index}`}
                         className="min-w-[360px] flex items-center gap-3 px-3 py-2 bg-white rounded-lg shadow-md shrink-0"
@@ -61,14 +62,15 @@ export const MotionScrollRow = ({
                             <h4 className="text-black font-semibold text-sm line-clamp-1">
                                 {item.villaId?.villaName}
                             </h4>
-                            <p className="text-xs text-gray-700">
-                                Check-in:{" "}
+                            <p className="text-xs text-gray-700 flex items-center gap-1">
+                                <FiLogIn />
                                 {item.checkInDate
                                     ? new Date(item.checkInDate).toDateString()
                                     : "—"}
                             </p>
-                            <p className="text-xs text-gray-700">
-                                Check-out:{" "}
+
+                            <p className="text-xs text-gray-700 flex items-center gap-1">
+                                <FiLogOut />
                                 {item.checkOutDate
                                     ? new Date(item.checkOutDate).toDateString()
                                     : "—"}

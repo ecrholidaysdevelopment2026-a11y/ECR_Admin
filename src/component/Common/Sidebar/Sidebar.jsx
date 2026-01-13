@@ -7,6 +7,7 @@ import {
 } from "react-icons/ai";
 import {
     MdOutlineProductionQuantityLimits,
+    MdSupportAgent,
 } from "react-icons/md";
 import {
     LuFolder,
@@ -18,7 +19,7 @@ import {
 } from "react-icons/lu";
 
 import logo from "../../../assets/ecr-logo.svg";
-import { FaGift, FaUserCheck } from "react-icons/fa";
+import { FaUserCheck } from "react-icons/fa";
 import { LucideCalendarX, LucideHome } from "lucide-react";
 
 const Sidebar = () => {
@@ -133,6 +134,7 @@ const Sidebar = () => {
                         { to: "/booking", label: "Booking", icon: <MdOutlineProductionQuantityLimits /> },
                         // { to: "/offers", label: "Offers", icon: <FaGift /> },
                         { to: "/users", label: "Users", icon: <FaUserCheck /> },
+                        { to: "/enquiries", label: "Enquiries", icon: <MdSupportAgent /> },
                     ].map(({ to, label, icon }) => (
                         <NavLink
                             key={to}
