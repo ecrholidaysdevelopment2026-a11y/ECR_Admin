@@ -11,7 +11,8 @@ import notificationReducer from "./slice/notificationSlice";
 import dashboardReducer from "./slice/dashboardSlice";
 import blockedDatesReducer from "./slice/blockedDatesSlice";
 import leadsReducer from "./slice/leadSlice";
-import Lead from "../pages/Lead/Lead";
+import eventReducer from "./slice/eventSlice";
+import categoryReducer from "./slice/categorySlice";
 
 const reducer = combineReducers({
   user: userReducer,
@@ -26,5 +27,7 @@ const reducer = combineReducers({
   dashboard: dashboardReducer,
   blockedDates: blockedDatesReducer,
   lead: leadsReducer,
+  event: eventReducer,
+  category: categoryReducer,
 });
 export default reducer;

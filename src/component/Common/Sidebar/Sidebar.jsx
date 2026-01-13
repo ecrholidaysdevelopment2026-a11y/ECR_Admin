@@ -6,6 +6,7 @@ import {
     AiOutlineSetting,
 } from "react-icons/ai";
 import {
+    MdCategory,
     MdOutlineProductionQuantityLimits,
     MdSupportAgent,
 } from "react-icons/md";
@@ -19,7 +20,7 @@ import {
 } from "react-icons/lu";
 
 import logo from "../../../assets/ecr-logo.svg";
-import { FaUserCheck } from "react-icons/fa";
+import { FaGift, FaUserCheck } from "react-icons/fa";
 import { LucideCalendarX, LucideHome } from "lucide-react";
 
 const Sidebar = () => {
@@ -132,7 +133,8 @@ const Sidebar = () => {
                     {[
                         { to: "/profile", label: "Profile", icon: <AiOutlineSetting /> },
                         { to: "/booking", label: "Booking", icon: <MdOutlineProductionQuantityLimits /> },
-                        // { to: "/offers", label: "Offers", icon: <FaGift /> },
+                        { to: "/category", label: "Category", icon: <MdCategory /> },
+                        { to: "/event", label: "Event", icon: <FaGift /> },
                         { to: "/users", label: "Users", icon: <FaUserCheck /> },
                         { to: "/enquiries", label: "Enquiries", icon: <MdSupportAgent /> },
                     ].map(({ to, label, icon }) => (
