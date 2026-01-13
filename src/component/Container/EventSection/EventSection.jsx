@@ -145,14 +145,14 @@ const EventSection = () => {
                                 </div>
                             </div>
                             <div className="p-5">
-                                <h3 className="font-bold text-lg text-gray-800 mb-2 truncate">
+                                <h3 className="font-bold text-lg text-gray-800 mb-2 truncate line-clamp-1">
                                     {event.title}
                                 </h3>
 
                                 <div className="space-y-2 mb-4">
                                     <div className="flex items-center gap-2 text-sm text-gray-600">
                                         <FiTag className="text-gray-400" />
-                                        <span className="font-medium">{event.categoryId?.name || 'No Category'}</span>
+                                        <span className="font-medium line-clamp-2">{event.categoryId?.name || 'No Category'}</span>
                                     </div>
                                     <div className="flex items-center gap-2 text-sm text-gray-600">
                                         <FiCalendar className="text-gray-400" />
@@ -296,7 +296,7 @@ const EventSection = () => {
                     <p className="text-gray-500 mb-6">Get started by creating your first event</p>
                     <button
                         onClick={() => setShowCreate(true)}
-                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        className="px-6 py-3 bg-black text-white rounded-lg  transition-colors"
                     >
                         Create Your First Event
                     </button>

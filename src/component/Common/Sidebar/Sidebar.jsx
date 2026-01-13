@@ -45,7 +45,7 @@ const Sidebar = () => {
                 <img src={logo} alt="Logo" className="h-10 w-auto" />
             </div>
 
-            <div className="flex-1 overflow-y-auto px-2 py-4">
+            <div className="flex-1 overflow-y-auto scrollbar-hide px-2 py-4">
                 <nav className="flex flex-col gap-1">
                     <NavLink
                         to="/"

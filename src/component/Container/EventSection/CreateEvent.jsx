@@ -26,7 +26,6 @@ import SingleSelectDropdown from "../../../common/SingleSelectDropdown";
 const CreateEvent = ({ formData, onBack }) => {
     const dispatch = useDispatch();
     const { loading, message, error } = useSelector((state) => state.event);
-
     const [coverPreview, setCoverPreview] = useState(null);
     const [galleryPreview, setGalleryPreview] = useState([]);
     const {
@@ -36,10 +35,8 @@ const CreateEvent = ({ formData, onBack }) => {
     const [form, setForm] = useState({
         eventName: "",
         eventImages: [],
-        isFeatured: false,
         categoryId: null
     });
-
 
     useEffect(() => {
         dispatch(getAllCategories());
@@ -51,7 +48,6 @@ const CreateEvent = ({ formData, onBack }) => {
         setForm({
             eventName: formData.title || "",
             eventImages: [],
-            isFeatured: formData.isFeatured || false,
             categoryId: formData.categoryId._id
         });
 
@@ -81,7 +77,6 @@ const CreateEvent = ({ formData, onBack }) => {
     const handleImage = (e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
-
         setForm((p) => ({
             ...p,
             eventImages: [...p.eventImages, ...files],
@@ -111,11 +106,9 @@ const CreateEvent = ({ formData, onBack }) => {
         if (!form.eventName.trim()) {
             return warningAlert("Event name required");
         }
-
         const fd = new FormData();
         fd.append("eventName", form.eventName);
-        fd.append("isFeatured", form.isFeatured);
-        fd.append("categoryId ", form.categoryId);
+        fd.append("categoryId", form.categoryId);
 
         form.eventImages.forEach((img) => {
             fd.append("eventImages", img);
@@ -161,13 +154,13 @@ const CreateEvent = ({ formData, onBack }) => {
                     onChange={handleChange}
                 />
                 <SingleSelectDropdown
-                    label="Select Location"
+                    label="Select Category"
                     options={categories}
                     value={form.categoryId}
                     onChange={(id) => setForm((prev) => ({ ...prev, categoryId: id }))}
                     searchable={true}
                     labelKey="name"
-                    placeholder="Select a location"
+                    placeholder="Select a Category"
                 />
                 <div className="border-dashed border-2 p-4 rounded-lg text-center">
                     <input
@@ -191,9 +184,9 @@ const CreateEvent = ({ formData, onBack }) => {
                             />
                         </div>
                     )}
-                    {galleryPreview.length > 0 && (
+                    {galleryPreview?.length > 0 && (
                         <div className="grid grid-cols-3 gap-3 mt-4">
-                            {galleryPreview.map((img, index) => (
+                            {galleryPreview?.map((img, index) => (
                                 <div key={index} className="relative">
                                     <Image
                                         src={img}
@@ -210,21 +203,6 @@ const CreateEvent = ({ formData, onBack }) => {
                             ))}
                         </div>
                     )}
-                </div>
-                <div className="flex items-center gap-3">
-                    <span>Featured</span>
-                    <div
-                        onClick={() =>
-                            setForm((p) => ({ ...p, isFeatured: !p.isFeatured }))
-                        }
-                        className={`w-14 h-7 rounded-full p-1 cursor-pointer ${form.isFeatured ? "bg-green-500" : "bg-gray-400"
-                            }`}
-                    >
-                        <div
-                            className={`bg-white w-5 h-5 rounded-full transition ${form.isFeatured ? "translate-x-7" : ""
-                                }`}
-                        />
-                    </div>
                 </div>
                 <div className="flex justify-end gap-3">
                     <Button loading={loading} type="submit">
